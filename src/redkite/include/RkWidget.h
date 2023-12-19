@@ -48,6 +48,7 @@ class RkHoverEvent;
 class RkMain;
 struct RkWindowId;
 class RkNativeWindowInfo;
+class LgWidget;
 
 class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
   public:
@@ -135,6 +136,7 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           double scaleFactor() const;
           bool pointerIsOverWindow() const;
           bool isChild(RkWidget *widget);
+          void setTopGraphicsWidget(LgWidget *widget);
 
   protected:
           RK_DELCATE_IMPL_PTR(RkWidget);

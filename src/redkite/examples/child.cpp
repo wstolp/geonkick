@@ -23,6 +23,7 @@
 
 #include "RkMain.h"
 #include "RkWidget.h"
+#include "LgWidget.h"
 #include "RkLog.h"
 
 #include <vector>
@@ -43,7 +44,7 @@ int main(int arc, char **argv)
         RK_LOG_DEBUG("create childs");
         for (auto i = 0; i < 10; i++) {
                 RK_LOG_DEBUG("create child " << i);
-                auto child = new RkWidget(mainWindow);
+                auto child = new LgWidget(mainWindow);
                 child->setTitle("Child[" + std::to_string(i) + "] - LEVEL 1");
                 child->setSize(60, 60);
                 child->setPosition(x, y);
@@ -51,13 +52,14 @@ int main(int arc, char **argv)
                 child->setBackgroundColor(0, 0, 255);
                 child->show();
 
-                auto child_l = new RkWidget(child);
+                /*auto child_l = new RkWidget(child);
                 child_l->setTitle("Child[" + std::to_string(i) + "] - LEVEL 2");
                 child_l->setPosition(10, 10);
                 child_l->setSize(30, 30);
                 child_l->setBorderColor(0, 0, 255);
                 child_l->setBackgroundColor(255, 0, 0);
                 child_l->show();
+                */
 
                 x += 65;
                 if (x > 650) {

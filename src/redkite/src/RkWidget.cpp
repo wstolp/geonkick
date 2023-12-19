@@ -658,3 +658,8 @@ bool RkWidget::isChild(RkWidget *widget)
         }
         return false;
 }
+
+void RkWidget::setTopGraphicsWidget(LgWidget *widget)
+{
+        impl_ptr->setTopGraphicsWidget(widget);
+}

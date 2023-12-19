@@ -22,6 +22,7 @@
  */
 
 #include "RkWidgetImpl.h"
+#include "LgWidgetImpl.h"
 #include "RkEvent.h"
 #include "RkPainter.h"
 
@@ -61,6 +62,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface, RkWidget* parent
 	, isWidgetSown{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
+        , topGraphicsWidget{nullptr}
 {
         RK_LOG_DEBUG("called");
         platformWindow->init();
@@ -88,6 +90,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , widgetDrawingColor{0, 0, 0}
         , widgetPointerShape{Rk::PointerShape::Arrow}
         , isGrabKeyEnabled{false}
+        , topGraphicsWidget{nullptr}
 {
         RK_LOG_DEBUG("called");
         platformWindow->init();
@@ -159,6 +162,8 @@ RkWindowId RkWidget::RkWidgetImpl::id() const
 
 void RkWidget::RkWidgetImpl::event(RkEvent *event)
 {
+        if (topGraphicsWidget)
+                topGraphicsWidget->event(event);
         switch (event->type())
         {
         case RkEvent::Type::Paint:
@@ -471,3 +476,7 @@ double RkWidget::RkWidgetImpl::scaleFactor() const
         return platformWindow->getScaleFactor();
 }
 
+void RkWidget::RkWidgetImpl::setTopGraphicsWidget(LgWidgetImpl *widget)
+{
+        topGraphicsWidget = widget;
+}
