@@ -72,4 +72,6 @@ class RK_EXPORT RkPoint {
         int yValue;
 };
 
+using LgPoint = RkPoint;
+
 #endif // RK_POINT_H

@@ -101,4 +101,6 @@ class RK_EXPORT RkPen {
        RkColor penColorVal;
 };
 
+using LgPen = RkPen;
+
 #endif // RK_PEN_H

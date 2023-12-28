@@ -171,4 +171,6 @@ class RK_EXPORT RkRect {
        RkPoint rectBottomRight;
 };
 
+using LgRect = RkRect;
+
 #endif // RK_RECT_H

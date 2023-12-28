@@ -116,4 +116,6 @@ class RK_EXPORT RkColor {
         unsigned short alphaValue;
 };
 
+using LgColor = RkColor;
+
 #endif // RK_COLOR_H

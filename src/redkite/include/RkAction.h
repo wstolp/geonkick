@@ -57,5 +57,7 @@ class RK_EXPORT RkAction {
         std::string actionName;
 };
 
+using LgAction = RkAction;
+
 #endif // RK_ACTION_H
 

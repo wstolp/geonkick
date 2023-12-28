@@ -496,4 +496,6 @@ namespace Rk {
 
 using RkString = std::string;
 
+namespace Lg = Rk;
+
 #endif // RK_GLOBAL_H

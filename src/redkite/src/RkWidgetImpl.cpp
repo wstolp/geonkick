@@ -22,7 +22,7 @@
  */
 
 #include "RkWidgetImpl.h"
-#include "LgWidgetImpl.h"
+#include "LgWidget.h"
 #include "RkEvent.h"
 #include "RkPainter.h"
 
@@ -476,7 +476,7 @@ double RkWidget::RkWidgetImpl::scaleFactor() const
         return platformWindow->getScaleFactor();
 }
 
-void RkWidget::RkWidgetImpl::setTopGraphicsWidget(LgWidgetImpl *widget)
+void RkWidget::RkWidgetImpl::setTopGraphicsWidget(LgWidget *widget)
 {
         topGraphicsWidget = widget;
 }

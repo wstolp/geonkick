@@ -25,14 +25,13 @@
 #define LGW_WIDGET_H
 
 #include "Rk.h"
-#include "RkObject.h"
-#include "RkEventQueue.h"
-#include "RkCanvas.h"
+#include "RkEvent.h"
+#include "LgObject.h"
 #include "RkRect.h"
 #include "RkColor.h"
 #include "RkFont.h"
 
-class LgEvent;
+/*class LgEvent;
 class LgCloseEvent;
 class LgKeyEvent;
 class LgMouseEvent;
@@ -44,16 +43,9 @@ class LgPaintEvent;
 class LgShowEvent;
 class LgHideEvent;
 class LgFocusEvent;
-class LgHoverEvent;
+class LgHoverEvent;*/
 
-using Lg = Rk;
-using LgSize = RkSize;
-using LgPoint = RkPoint;
-using LgColor = RkColor;
-using LgFont = RkFont;
-using LgObject = RkObject;
-
-class LgWidget: public LgObject, public LgCanvas {
+class LgWidget: public LgObject {
   public:
           RK_CLASS_INFO(style_element, "LgWidget")
           RK_CLASS_INFO(style_class, "")
@@ -159,7 +151,7 @@ class LgWidget: public LgObject, public LgCanvas {
  private:
           RK_DISABLE_COPY(LgWidget);
           RK_DISABLE_MOVE(LgWidget);
-          friend class LgEventQueue;
+          friend class RkWidget;
 };
 
 #endif // LGW_WIDGET_H

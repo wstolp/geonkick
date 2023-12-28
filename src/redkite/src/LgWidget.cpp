@@ -21,12 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "LgLog.h"
+#include "RkLog.h"
+#include "RkEvent.h"
 #include "LgWidget.h"
-#include "LgEvent.h"
 #include "LgWidgetImpl.h"
-#include "LgPlatform.h"
-#include "LgMain.h"
+#include "RkWidget.h"
+
+LgWidget::LgWidget(RkWidget *parent, Lg::WindowFlags flags)
+        : LgObject(nullptr, std::make_unique<LgWidgetImpl>(this, nullptr, flags))
+        , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
+{
+        parent->setTopGraphicsWidget(this);
+}
 
 LgWidget::LgWidget(LgWidget *parent, Lg::WindowFlags flags)
         : LgObject(parent, std::make_unique<LgWidgetImpl>(this, parent, flags))
@@ -408,8 +414,9 @@ void LgWidget::event(LgEvent *event)
 void LgWidget::closeEvent([[maybe_unused]] LgCloseEvent *event)
 {
         if (parentWidget()) {
-                auto event = std::make_unique<LgDeleteChild>(parentWidget(), this);
-                eventQueue()->postEvent(parentWidget(), std::move(event));
+                //using LgDeleteChild = RkDeleteChild;
+                // auto event = std::make_unique<LgDeleteChild>(parentWidget(), this);
+                //   eventQueue()->postEvent(parentWidget(), std::move(event));
         }
 }
 
@@ -442,7 +449,7 @@ void LgWidget::mouseDoubleClickEvent(LgMouseEvent *event)
         mouseButtonPressEvent(event);
 }
 
-void LgWidget::wheelEvent([maybe_unused]LgWheelEvent *event)
+void LgWidget::wheelEvent([[maybe_unused]]LgWheelEvent *event)
 {
 }
 

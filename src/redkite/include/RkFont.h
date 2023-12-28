@@ -89,4 +89,6 @@ class RK_EXPORT RkFont {
         Style fontStyle;
 };
 
+using LgFont = RkFont;
+
 #endif // RK_FONT_H

@@ -34,7 +34,7 @@ class RkWindowWin;
 class RkWindowX;
 #endif // RK_WIN_OS
 
-class LgWidgetImpl;
+class LgWidget;
 
 class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
  public:
@@ -105,7 +105,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
-        void setTopGraphicsWidget(LgWidgetImpl *widget);
+        void setTopGraphicsWidget(LgWidget *widget);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkWidget);
@@ -131,7 +131,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
 	bool isWidgetSown;
         bool isGrabKeyEnabled;
         bool isPropagateGrabKey;
-        LgWidgetImpl *topGraphicsWidget;
+        LgWidget *topGraphicsWidget;
 };
 
 #endif // RK_WIDGET_IMPL_H

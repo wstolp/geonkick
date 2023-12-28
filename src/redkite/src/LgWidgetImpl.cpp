@@ -22,17 +22,17 @@
  */
 
 #include "LgWidgetImpl.h"
-#include "LgEvent.h"
-#include "LgPainter.h"
+#include "RkEvent.h"
+#include "RkPainter.h"
 
 LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent, Lg::WindowFlags flags, bool isTopWindow)
-        : LgObject::LgObjectImpl(widgetInterface, parent, Lg::ObjectType::Widget)
+        : RkObject::RkObjectImpl(widgetInterface, parent, Lg::ObjectType::Widget)
         , inf_ptr{widgetInterface}
         , widgetClosed{false}
         , widgetMinimumSize{0, 0}
         , widgetMaximumSize{1000000, 1000000}
-        , widgetSize{platformWindow->size()}
-        , widgetBackground(platformWindow->background())
+        , widgetSize{0, 0}
+        , widgetBackground{255, 255, 255}
         , widgetAttributes{defaultWidgetAttributes()}
         , widgetModality{(static_cast<int>(flags) & static_cast<int>(Lg::WindowFlags::Dialog)) ? Lg::Modality::ModalTopWidget : Lg::Modality::NonModal}
         , widgetTextColor{0, 0, 0}
@@ -43,7 +43,6 @@ LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent
         , isPropagateGrabKey{true}
 {
         RK_LOG_DEBUG("called");
-        platformWindow->init();
 }
 
 LgWidget::LgWidgetImpl::~LgWidgetImpl()
@@ -51,14 +50,9 @@ LgWidget::LgWidgetImpl::~LgWidgetImpl()
         RK_LOG_DEBUG("called");
 }
 
-void LgWidget::LgWidgetImpl::setEventQueue(LgEventQueue *queue)
-{
-        LgObjectImpl::setEventQueue(queue);
-}
-
 Lg::WindowFlags LgWidget::LgWidgetImpl::windowFlags() const
 {
-        return platformWindow->flags();
+        return static_cast<Lg::WindowFlags>(0);
 }
 
 Lg::WidgetAttribute LgWidget::LgWidgetImpl::defaultWidgetAttributes()
@@ -158,8 +152,6 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
                 inf_ptr->hoverEvent(static_cast<LgHoverEvent*>(event));
                 break;
         case LgEvent::Type::Resize:
-                widgetSize = platformWindow->size();
-                platformWindow->resizeCanvas();
                 inf_ptr->resizeEvent(static_cast<LgResizeEvent*>(event));
                 break;
 	case LgEvent::Type::Show:
@@ -172,7 +164,7 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
                 break;
         case LgEvent::Type::DeleteChild:
                 RK_LOG_DEBUG("LgEvent::Type::DeleteChild:" << title());
-                delete static_cast<LgDeleteChild*>(event)->child();
+                //                delete static_cast<LgDeleteChild*>(event)->child();
                 break;
         case LgEvent::Type::Close:
                 RK_LOG_DEBUG("LgEvent::Type::Close");
@@ -239,22 +231,21 @@ void LgWidget::LgWidgetImpl::setMaximumHeight(int height)
 
 void LgWidget::LgWidgetImpl::setPosition(const LgPoint &position)
 {
-        platformWindow->setPosition(position);
 }
 
 LgPoint LgWidget::LgWidgetImpl::position() const
 {
-        return platformWindow->position();
+        return {0, 0};
 }
 
 void LgWidget::LgWidgetImpl::setBorderWidth(int width)
 {
-        widgetBorderWidth = width;
+        //        widgetBorderWidth = width;
 }
 
 int LgWidget::LgWidgetImpl::borderWidth() const
 {
-        return widgetBorderWidth;
+        return 0;//widgetBorderWidth;
 }
 
 void LgWidget::LgWidgetImpl::setBorderColor(const LgColor &color)
@@ -309,12 +300,11 @@ Lg::WidgetAttribute LgWidget::LgWidgetImpl::getWidgetAttributes() const
 
 void LgWidget::LgWidgetImpl::setFocus(bool b)
 {
-        platformWindow->setFocus(b);
 }
 
 bool LgWidget::LgWidgetImpl::hasFocus() const
 {
-        return platformWindow->hasFocus();
+        return false;
 }
 
 void LgWidget::LgWidgetImpl::setTextColor(const LgColor &color)
@@ -379,15 +369,14 @@ bool LgWidget::LgWidgetImpl::propagateGrabKeyEnabled() const
 
 bool LgWidget::LgWidgetImpl::pointerIsOverWindow() const
 {
-        return platformWindow->pointerIsOverWindow();
+        return false;
 }
 
 void LgWidget::LgWidgetImpl::setScaleFactor(double factor)
 {
-        widgetScaleFactor = factor;
 }
 
 double LgWidget::LgWidgetImpl::scaleFactor() const
 {
-        return widgetScaleFactor;
+        return 1.0;
 }

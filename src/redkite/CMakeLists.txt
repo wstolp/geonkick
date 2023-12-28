@@ -4,7 +4,7 @@ project(redkite VERSION 1.3.1)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(RK_ENABLE_EXAMPLES "Build examples" OFF)
+option(RK_ENABLE_EXAMPLES "Build examples" ON)
 option(RK_BUILD_TOOLS "Build tools" ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -55,9 +55,9 @@ if (NOT CMAKE_INSTALL_LIBDIR)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-#  message(STATUS "enable logging")
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  message(STATUS "enable logging")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
 endif()
 
 if (NOT RK_GRAPHICS_BACKEND)

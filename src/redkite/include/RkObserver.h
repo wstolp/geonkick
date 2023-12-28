@@ -40,4 +40,6 @@ class RK_EXPORT RkObserver {
         RkObject *observerObject;
 };
 
+using LgObserver = RkObserver;
+
 #endif // RK_OBSERVER_H

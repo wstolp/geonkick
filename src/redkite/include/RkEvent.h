@@ -223,5 +223,19 @@ class RkScaleFactorEvent: public RkEvent {
       double scaleFactor;
 };
 
+using LgEvent = RkEvent;
+using LgCloseEvent = RkCloseEvent;
+using LgKeyEvent = RkKeyEvent;
+using LgMouseEvent = RkMouseEvent;
+using LgWheelEvent = RkWheelEvent;
+using LgDropEvent = RkDropEvent;
+using LgMoveEvent = RkMoveEvent;
+using LgResizeEvent = RkResizeEvent;
+using LgPaintEvent = RkPaintEvent;
+using LgShowEvent = RkShowEvent;
+using LgHideEvent = RkHideEvent;
+using LgFocusEvent = RkFocusEvent;
+using LgHoverEvent = RkHoverEvent;
+
 #endif // RK_EVENT_H
 

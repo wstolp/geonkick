@@ -52,14 +52,13 @@ int main(int arc, char **argv)
                 child->setBackgroundColor(0, 0, 255);
                 child->show();
 
-                /*auto child_l = new RkWidget(child);
-                child_l->setTitle("Child[" + std::to_string(i) + "] - LEVEL 2");
-                child_l->setPosition(10, 10);
-                child_l->setSize(30, 30);
-                child_l->setBorderColor(0, 0, 255);
-                child_l->setBackgroundColor(255, 0, 0);
-                child_l->show();
-                */
+                //auto child_l = new RkWidget(child);
+                //child_l->setTitle("Child[" + std::to_string(i) + "] - LEVEL 2");
+                //child_l->setPosition(10, 10);
+                //child_l->setSize(30, 30);
+                //child_l->setBorderColor(0, 0, 255);
+                //child_l->setBackgroundColor(255, 0, 0);
+                //child_l->show();
 
                 x += 65;
                 if (x > 650) {

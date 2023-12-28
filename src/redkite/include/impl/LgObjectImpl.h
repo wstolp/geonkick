@@ -26,6 +26,4 @@
 
 #include "RkObjectImpl.h"
 
-using LgObjectImpl = RkObjectImpl;
-
-#endif LGW_OBJECT_H // LGW_OBJECT_H
+#endif // LGW_OBJECT_H

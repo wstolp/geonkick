@@ -72,4 +72,6 @@ class RK_EXPORT RkSize {
         int heightValue;
 };
 
+using LgSize = RkSize;
+
 #endif // RK_SIZE_H

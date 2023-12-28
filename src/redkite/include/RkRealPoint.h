@@ -66,4 +66,6 @@ class RK_EXPORT RkRealPoint {
         rk_real yValue;
 };
 
+using LgRealPoint = RkRealPoint;
+
 #endif // RK_REAL_POINT_H

@@ -25,9 +25,9 @@
 #define LWG_WIDGET_IMPL_H
 
 #include "LgWidget.h"
-#include "LgObjectImpl.h"
+#include "RkObjectImpl.h"
 
-class LgWidget::LgWidgetImpl : public LgObject::LgObjectImpl {
+class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
  public:
         explicit LgWidgetImpl(LgWidget* interface,
                               LgWidget* parent = nullptr,
@@ -38,7 +38,6 @@ class LgWidget::LgWidgetImpl : public LgObject::LgObjectImpl {
         LgWidgetImpl(LgWidgetImpl &&other) = delete;
         LgWidgetImpl& operator=(LgWidgetImpl &&other) = delete;
         virtual ~LgWidgetImpl();
-        void setEventQueue(LgEventQueue *queue) override;
         Lg::WindowFlags windowFlags() const;
         void show(bool b);
 	bool isShown() const;
@@ -99,6 +98,7 @@ class LgWidget::LgWidgetImpl : public LgObject::LgObjectImpl {
         LgColor widgetBackground;
         Lg::WidgetAttribute widgetAttributes;
         Lg::Modality widgetModality;
+        LgColor widgetBorderColor;
         LgColor widgetTextColor;
         LgColor widgetDrawingColor;
         LgFont widgetFont;
