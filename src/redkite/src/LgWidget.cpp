@@ -27,34 +27,11 @@
 #include "LgWidgetImpl.h"
 #include "RkWidget.h"
 
-LgWidget::LgWidget(RkWidget *parent, Lg::WindowFlags flags)
-        : LgObject(nullptr, std::make_unique<LgWidgetImpl>(this, nullptr, flags))
-        , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
-{
-        parent->setTopGraphicsWidget(this);
-        impl_ptr->setSystemWindow(parent);
-}
-
 LgWidget::LgWidget(LgWidget *parent, Lg::WindowFlags flags)
         : LgObject(parent, std::make_unique<LgWidgetImpl>(this, parent, flags))
         , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
-        if (modality() == Lg::Modality::ModalTopWidget) {
-                auto topWidget = getTopWidget();
-                if (topWidget)
-                        topWidget->disableInput();
-                else if (parentWidget() && modality() == Lg::Modality::ModalParent)
-                        parentWidget()->disableInput();
-        }
-}
-
-LgWidget::LgWidget(RkWidget *parent, std::unique_ptr<LgWidgetImpl> impl)
-        : LgObject(nullptr, std::move(impl))
-        , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
-{
-        parent->setTopGraphicsWidget(this);
-        impl_ptr->setSystemWindow(parent);
         if (modality() == Lg::Modality::ModalTopWidget) {
                 auto topWidget = getTopWidget();
                 if (topWidget)
@@ -576,26 +553,6 @@ Lg::PointerShape LgWidget::pointerShape() const
         return impl_ptr->pointerShape();
 }
 
-void LgWidget::setScaleFactor(double factor)
-{
-        impl_ptr->setScaleFactor(factor);
-        for (const auto &ch: children()) {
-                auto widget = dynamic_cast<LgWidget*>(ch);
-                if (widget)
-                        widget->setScaleFactor(factor);
-        }
-
-        if (this == getTopWidget())
-            eventQueue()->setScaleFactor(factor);
-        update();
-}
-
-double LgWidget::scaleFactor() const
-{
-        return impl_ptr->scaleFactor();
-}
-
-
 bool LgWidget::pointerIsOverWindow() const
 {
         return impl_ptr->pointerIsOverWindow();
@@ -608,16 +565,5 @@ bool LgWidget::isChild(LgWidget *widget)
                         return true;
         }
         return false;
-}
-
-RkCanvasInfo* LgWidget::getCanvasInfo() const
-{
-        if (parentWidget())
-                return parentWidget()->getCanvasInfo();
-        return impl_ptr->getSystemWindow()->getCanvasInfo();
-}
-
-void LgWidget::freeCanvasInfo()
-{
 }
 

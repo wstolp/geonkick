@@ -67,6 +67,11 @@ class RK_EXPORT RkSize {
                heightValue = height;
        }
 
+       constexpr int area() const
+       {
+               return widthValue *  heightValue;
+       }
+
  private:
         int widthValue;
         int heightValue;

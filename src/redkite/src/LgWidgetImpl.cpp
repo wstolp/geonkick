@@ -24,6 +24,8 @@
 #include "LgWidgetImpl.h"
 #include "RkEvent.h"
 #include "RkPainter.h"
+#include "RkMain.h"
+#include "RkWidget.h"
 
 LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent, Lg::WindowFlags flags, bool isTopWindow)
         : RkObject::RkObjectImpl(widgetInterface, parent, Lg::ObjectType::Widget)
@@ -44,11 +46,17 @@ LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent
         , systemWindow{nullptr}
 {
         RK_LOG_DEBUG("called");
+        if (!parent) {
+                systemWindow = new LgSystemWindow(LgApplication::getInstance());
+                systemWindow->setTopGraphicsWidget(this);
+                RK_LOG_DEBUG("LgSystemWindow created");
+        }
 }
 
 LgWidget::LgWidgetImpl::~LgWidgetImpl()
 {
         RK_LOG_DEBUG("called");
+        delete systemWindow;
 }
 
 Lg::WindowFlags LgWidget::LgWidgetImpl::windowFlags() const
@@ -67,6 +75,8 @@ Lg::WidgetAttribute LgWidget::LgWidgetImpl::defaultWidgetAttributes()
 void LgWidget::LgWidgetImpl::show(bool b)
 {
 	isWidgetSown = b;
+        if (systemWindow)
+                systemWindow->show(isWidgetSown);
 }
 
 bool LgWidget::LgWidgetImpl::isShown() const
@@ -77,6 +87,8 @@ bool LgWidget::LgWidgetImpl::isShown() const
 void LgWidget::LgWidgetImpl::setTitle(const std::string &title)
 {
         widgetTitle = title;
+        if (systemWindow)
+                systemWindow->show(isWidgetSown);
 }
 
 const std::string& LgWidget::LgWidgetImpl::title() const
@@ -195,6 +207,8 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
 void LgWidget::LgWidgetImpl::setSize(const LgSize &size)
 {
         widgetSize = size;
+        if (systemWindow)
+                systemWindow->setSize(size);
 }
 
 LgSize LgWidget::LgWidgetImpl::size() const
@@ -225,26 +239,36 @@ int LgWidget::LgWidgetImpl::maximumHeight() const
 void LgWidget::LgWidgetImpl::setMinimumWidth(int width)
 {
         widgetMinimumSize.setWidth(width);
+        if (systemWindow)
+                systemWindow->setMinimumWidth(width);
 }
 
 void LgWidget::LgWidgetImpl::setMaximumWidth(int width)
 {
         widgetMaximumSize.setWidth(width);
+        if (systemWindow)
+                systemWindow->setMaximumWidth(width);
 }
 
 void LgWidget::LgWidgetImpl::setMinimumHeight(int height)
 {
         widgetMinimumSize.setHeight(height);
+        if (systemWindow)
+                systemWindow->setMinimumHeight(height);
 }
 
 void LgWidget::LgWidgetImpl::setMaximumHeight(int height)
 {
         widgetMaximumSize.setHeight(height);
+        if (systemWindow)
+                systemWindow->setMaximumHeight(height);
 }
 
 void LgWidget::LgWidgetImpl::setPosition(const LgPoint &position)
 {
         widgetPosition = position;
+        if (systemWindow)
+                systemWindow->setPosition(height);
 }
 
 LgPoint LgWidget::LgWidgetImpl::position() const
@@ -254,12 +278,12 @@ LgPoint LgWidget::LgWidgetImpl::position() const
 
 void LgWidget::LgWidgetImpl::setBorderWidth(int width)
 {
-        //        widgetBorderWidth = width;
+        widgetBorderWidth = width;
 }
 
 int LgWidget::LgWidgetImpl::borderWidth() const
 {
-        return 0;//widgetBorderWidth;
+        return widgetBorderWidth;
 }
 
 void LgWidget::LgWidgetImpl::setBorderColor(const LgColor &color)
@@ -275,6 +299,8 @@ const LgColor& LgWidget::LgWidgetImpl::borderColor() const
 void LgWidget::LgWidgetImpl::setBackgroundColor(const LgColor &color)
 {
         widgetBackground = color;
+        if (systemWindow)
+                systemWindow->setBackgroundColor(color);
 }
 
 const LgColor& LgWidget::LgWidgetImpl::background() const
@@ -384,25 +410,6 @@ bool LgWidget::LgWidgetImpl::propagateGrabKeyEnabled() const
 bool LgWidget::LgWidgetImpl::pointerIsOverWindow() const
 {
         return false;
-}
-
-void LgWidget::LgWidgetImpl::setScaleFactor(double factor)
-{
-}
-
-double LgWidget::LgWidgetImpl::scaleFactor() const
-{
-        return 1.0;
-}
-
-void LgWidget::LgWidgetImpl::setSystemWindow(RkWidget *window)
-{
-        systemWindow = window;
-}
-
-RkWidget* LgWidget::LgWidgetImpl::getSystemWindow() const
-{
-        return systemWindow;
 }
 
 

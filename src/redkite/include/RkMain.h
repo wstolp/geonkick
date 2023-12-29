@@ -26,7 +26,7 @@
 
 #include "Rk.h"
 
-class RkWidget;
+class LgSystemWindow;
 class RkEventQueue;
 
 class RK_EXPORT RkMain {
@@ -34,15 +34,18 @@ class RK_EXPORT RkMain {
           RkMain();
           RkMain(int argc, char **argv);
           ~RkMain();
-          bool setTopLevelWidget(RkWidget* widget);
-          RkWidget* topLevelWidget(void) const;
+          bool setTopLevelWidget(LgSystemWindow* widget);
+          LgSystemWindow* topLevelWidget(void) const;
           int exec(bool block = true);
           RkEventQueue* eventQueue() const;
+          static getInstance();
 
  private:
        	  RK_DECLARE_IMPL(RkMain);
           RK_DISABLE_COPY(RkMain);
           RK_DISABLE_MOVE(RkMain);
 };
+
+using LgApplication = RkMain;
 
 #endif // RK_MAIN_H

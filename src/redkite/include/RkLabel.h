@@ -24,13 +24,12 @@
 #ifndef RK_LABEL_H
 #define RK_LABEL_H
 
-#include "RkWidget.h"
 #include "LgWidget.h"
 #include "RkImage.h"
 
 class RkLabel : public LgWidget {
  public:
-    RkLabel(RkWidget *parent, const std::string &text = std::string());
+    RkLabel(LgWidget *parent, const std::string &text = std::string());
     virtual ~RkLabel() = default;
     void setText(const std::string &text);
     std::string text() const;

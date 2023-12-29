@@ -168,4 +168,6 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           friend class RkEventQueue;
 };
 
+using LgSystemWindow = RkWidget;
+
 #endif // RK_WIDGET_H

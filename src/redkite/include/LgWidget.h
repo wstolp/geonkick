@@ -51,8 +51,8 @@ class LgWidget: public LgObject, public RkCanvas {
           RK_CLASS_INFO(style_element, "LgWidget")
           RK_CLASS_INFO(style_class, "")
           RK_CLASS_INFO(style_id, "")
-          explicit LgWidget(RkWidget *parent, Lg::WindowFlags flags = Lg::WindowFlags::Widget);
-          explicit LgWidget(LgWidget *parent, Lg::WindowFlags flags = Lg::WindowFlags::Widget);
+          explicit LgWidget(LgWidget *parent = nullptr,
+                            Lg::WindowFlags flags = Lg::WindowFlags::Widget);
           virtual ~LgWidget();
           Lg::WindowFlags windowFlags() const;
 	  void show(bool b = true);
@@ -126,12 +126,9 @@ class LgWidget: public LgObject, public RkCanvas {
           double scaleFactor() const;
           bool pointerIsOverWindow() const;
           bool isChild(LgWidget *widget);
-          RkCanvasInfo* getCanvasInfo() const override;
-          void freeCanvasInfo() override;
-
+        
   protected:
           RK_DELCATE_IMPL_PTR(LgWidget);
-          LgWidget(RkWidget *parent, std::unique_ptr<LgWidgetImpl> impl);
           LgWidget(LgWidget *parent, std::unique_ptr<LgWidgetImpl> impl);
           void event(LgEvent *event) override;
           virtual void closeEvent(LgCloseEvent *event);

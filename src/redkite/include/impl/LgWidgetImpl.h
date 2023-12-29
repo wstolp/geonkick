@@ -87,11 +87,7 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
         void propagateGrabKey(bool b);
         bool propagateGrabKeyEnabled() const;
         bool pointerIsOverWindow() const;
-        void setScaleFactor(double factor);
-        double scaleFactor() const;
-        void setSystemWindow(RkWidget *window);
-        RkWidget* getSystemWindow() const;
-
+        
  private:
         RK_DECALRE_INTERFACE_PTR(LgWidget);
         std::string widgetTitle;
