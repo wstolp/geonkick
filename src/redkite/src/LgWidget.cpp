@@ -32,6 +32,7 @@ LgWidget::LgWidget(RkWidget *parent, Lg::WindowFlags flags)
         , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
 {
         parent->setTopGraphicsWidget(this);
+        impl_ptr->setSystemWindow(parent);
 }
 
 LgWidget::LgWidget(LgWidget *parent, Lg::WindowFlags flags)
@@ -39,6 +40,21 @@ LgWidget::LgWidget(LgWidget *parent, Lg::WindowFlags flags)
         , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
+        if (modality() == Lg::Modality::ModalTopWidget) {
+                auto topWidget = getTopWidget();
+                if (topWidget)
+                        topWidget->disableInput();
+                else if (parentWidget() && modality() == Lg::Modality::ModalParent)
+                        parentWidget()->disableInput();
+        }
+}
+
+LgWidget::LgWidget(RkWidget *parent, std::unique_ptr<LgWidgetImpl> impl)
+        : LgObject(nullptr, std::move(impl))
+        , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
+{
+        parent->setTopGraphicsWidget(this);
+        impl_ptr->setSystemWindow(parent);
         if (modality() == Lg::Modality::ModalTopWidget) {
                 auto topWidget = getTopWidget();
                 if (topWidget)
@@ -356,7 +372,7 @@ void LgWidget::enableInput()
         setWidgetAttribute(static_cast<Lg::WidgetAttribute>(static_cast<int>(Lg::WidgetAttribute::KeyInputEnabled)
                            | static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled)
                            | static_cast<int>(Lg::WidgetAttribute::CloseInputEnabled)));
-        for (const auto &ch: children()) {
+        for (auto &ch: children()) {
                 auto widget = dynamic_cast<LgWidget*>(ch);
                 if (widget)
                         widget->enableInput();
@@ -593,3 +609,15 @@ bool LgWidget::isChild(LgWidget *widget)
         }
         return false;
 }
+
+RkCanvasInfo* LgWidget::getCanvasInfo() const
+{
+        if (parentWidget())
+                return parentWidget()->getCanvasInfo();
+        return impl_ptr->getSystemWindow()->getCanvasInfo();
+}
+
+void LgWidget::freeCanvasInfo()
+{
+}
+

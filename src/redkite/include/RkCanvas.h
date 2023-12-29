@@ -26,13 +26,13 @@
 
 #include "Rk.h"
 
-struct RK_EXPORT RkCanvasInfo;
+struct RkCanvasInfo;
 
-class RK_EXPORT RkCanvas {
+class RkCanvas {
  public:
         RkCanvas() = default;
         virtual ~RkCanvas() = default;
-        virtual const RkCanvasInfo* getCanvasInfo() const = 0;
+        virtual RkCanvasInfo* getCanvasInfo() const = 0;
         virtual void freeCanvasInfo() = 0;
 };
 

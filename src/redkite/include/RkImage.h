@@ -74,7 +74,7 @@ class RK_EXPORT RkImage : public RkCanvas {
         int height() const;
         RkSize size() const;
         bool isNull() const;
-        const RkCanvasInfo* getCanvasInfo() const override;
+        RkCanvasInfo* getCanvasInfo() const override;
         void freeCanvasInfo() override;
 
  protected:

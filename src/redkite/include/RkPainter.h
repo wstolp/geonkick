@@ -65,4 +65,6 @@ class RK_EXPORT RkPainter {
         RK_DECLARE_IMPL(RkPainter);
 };
 
+using LgPainter = RkPainter;
+
 #endif // RK_PAINTER_H

@@ -27,6 +27,7 @@
 #include "Rk.h"
 #include "RkEvent.h"
 #include "LgObject.h"
+#include "RkCanvas.h"
 #include "RkRect.h"
 #include "RkColor.h"
 #include "RkFont.h"
@@ -45,7 +46,7 @@ class LgHideEvent;
 class LgFocusEvent;
 class LgHoverEvent;*/
 
-class LgWidget: public LgObject {
+class LgWidget: public LgObject, public RkCanvas {
   public:
           RK_CLASS_INFO(style_element, "LgWidget")
           RK_CLASS_INFO(style_class, "")
@@ -125,9 +126,12 @@ class LgWidget: public LgObject {
           double scaleFactor() const;
           bool pointerIsOverWindow() const;
           bool isChild(LgWidget *widget);
+          RkCanvasInfo* getCanvasInfo() const override;
+          void freeCanvasInfo() override;
 
   protected:
           RK_DELCATE_IMPL_PTR(LgWidget);
+          LgWidget(RkWidget *parent, std::unique_ptr<LgWidgetImpl> impl);
           LgWidget(LgWidget *parent, std::unique_ptr<LgWidgetImpl> impl);
           void event(LgEvent *event) override;
           virtual void closeEvent(LgCloseEvent *event);

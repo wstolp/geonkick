@@ -25,6 +25,7 @@
 #define RK_CONTAINER_ITEM_H
 
 #include <RkWidget.h>
+#include <LgWidget.h>
 
 class RK_EXPORT RkContainerItem: public RkObject {
  public:

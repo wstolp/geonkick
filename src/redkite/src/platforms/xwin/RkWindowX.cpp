@@ -333,15 +333,18 @@ void RkWindowX::resizeCanvas()
         cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
-const RkCanvasInfo* RkWindowX::getCanvasInfo() const
+RkCanvasInfo* RkWindowX::getCanvasInfo() const
 {
         return canvasInfo ? canvasInfo.get() : nullptr;
 }
 
 void RkWindowX::freeCanvasInfo()
 {
-        if (canvasInfo)
+        if (canvasInfo) {
+                cairo_destroy(canvasInfo->cairo_context);
                 cairo_surface_destroy(canvasInfo->cairo_surface);
+                canvasInfo.reset();
+        }
 }
 
 #else

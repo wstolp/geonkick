@@ -30,10 +30,13 @@
 class RK_EXPORT RkContainer: public RkContainerItem {
  public:
         RkContainer(RkWidget *parent  = nullptr, Rk::Orientation orientation = Rk::Orientation::Horizontal);
+        RkContainer(LgWidget *parent  = nullptr, Rk::Orientation orientation = Rk::Orientation::Horizontal);
         virtual ~RkContainer() = default;
         void addContainer(RkContainer *contaier, Rk::Alignment align = Rk::Alignment::AlignLeft);
 	void addWidget(RkWidget *widget, Rk::Alignment align = Rk::Alignment::AlignLeft);
 	void removeWidget(RkWidget *widget);
+        void addWidget(LgWidget *widget, Rk::Alignment align = Rk::Alignment::AlignLeft);
+	void removeWidget(LgWidget *widget);
 	void addSpace(int space, Rk::Alignment align = Rk::Alignment::AlignLeft);
 	void removeAt(size_t index);
         RkContainerItem* at(size_t index) const;
@@ -41,6 +44,7 @@ class RK_EXPORT RkContainer: public RkContainerItem {
 	void clear();
 	Rk::Orientation orientation() const;
 	Rk::Alignment alignment(RkWidget *widget) const;
+        Rk::Alignment alignment(LgWidget *widget) const;
 	Rk::Alignment alignment(size_t index) const;
 	void setSize(const RkSize &size) override;
 	void setWidth(int width) override;

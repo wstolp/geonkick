@@ -23,15 +23,16 @@
 
 #include "RkMain.h"
 #include "RkWidget.h"
+#include "LgWidget.h"
 #include "RkPainter.h"
 #include "RkPoint.h"
 #include "RkLog.h"
 #include "RkEvent.h"
 
-class  PainterExample: public RkWidget {
+class  PainterExample: public LgWidget {
   public:
-        PainterExample(RkMain *app)
-                : RkWidget(app)
+        PainterExample(LgWidget *parent)
+                : LgWidget(parent)
                 , clickPoint(50, 50)
                 , startDraw{true}
         {
@@ -42,109 +43,63 @@ class  PainterExample: public RkWidget {
         ~PainterExample() = default;
 
   protected:
-        void paintEvent(RkPaintEvent *event) override
+        void paintEvent(LgPaintEvent *event) override
         {
-                RK_LOG_INFO("called");
-                if (startDraw) {
-                        RK_LOG_INFO("start draw");
-                        RkPainter painter(this);
-                        RkPen pen(RkColor(255, 0, 0));
-                        pen.setWidth(1);
-                        pen.setStyle(RkPen::PenStyle::DashLine);
-                        painter.setPen(pen);
-                        painter.drawLine({10, 10}, {100, 100});
-                        painter.drawCircle(50, 50, 40);
-                        painter.fillRect({50, 50, 20, 20}, background());
-                        pen.setStyle(RkPen::PenStyle::DotLine);
-                        pen.setColor({0, 55, 123});
-                        painter.setPen(pen);
-                        painter.drawRect({10, 10, 10, 10});
-                }
+                RkPainter painter(this);
+                LgPen pen(RkColor(255, 0, 0));
+                pen.setWidth(1);
+                pen.setStyle(RkPen::PenStyle::DashLine);
+                painter.setPen(pen);
+                painter.drawLine({10, 10}, {100, 100});
+                painter.drawCircle(50, 50, 40);
+                painter.fillRect({50, 50, 20, 20}, background());
+                pen.setStyle(LgPen::PenStyle::DotLine);
+                pen.setColor({0, 55, 123});
+                painter.setPen(pen);
+                painter.drawRect({10, 10, 10, 10});
+        }
 
-			 /*
-                if (startDraw) {
-
-                        if (image.width() != width() || image.height() != height()) {
-                                RkImage im(width(), height());
-                                image = im;
-                        }
-
-                        RkPainter painter(&image);
-                        painter.fillRect(rect(), background());
-                        RkPen pen(RkColor(255, 0, 0));
-                        pen.setWidth(1);
-                        pen.setStyle(RkPen::PenStyle::DashLine);
-                        painter.setPen(pen);
-                        painter.drawCircle(50, 50, 40);
-                        painter.drawLine(50, 50, 100, 100);
-
-                        painter.drawCircle(clickPoint.x() + 40 / 2, clickPoint.y() + 40/2, 40);
-                        painter.drawLine(clickPoint, RkPoint(clickPoint.x() + 80, clickPoint.y() + 80));
-
-                        pen.setStyle(RkPen::PenStyle::DotLine);
-                        pen.setColor(RkColor(0, 255, 0));
-                        painter.setPen(pen);
-                        painter.drawCircle(clickPoint.x() + 40 / 2, clickPoint.y() - 40/2, 40);
-                        painter.drawLine(clickPoint, RkPoint(clickPoint.x() + 80, clickPoint.y() - 80));
-
-                        pen.setStyle(RkPen::PenStyle::SolidLine);
-                        pen.setColor(RkColor(0, 0, 255));
-                        painter.setPen(pen);
-                        painter.drawCircle(clickPoint.x() - 40 / 2, clickPoint.y() - 40/2, 40);
-                        painter.drawLine(clickPoint, RkPoint(clickPoint.x() - 80, clickPoint.y() - 80));
-
-                        int y = 50;
-                        painter.fillRect(RkRect(50, y, 100, 25), RkColor(255, 255, 255));
-                        RkFont font = painter.font();
-                        font.setStyle(RkFont::Style::Italic);
-                        painter.setFont(font);
-                        painter.drawText({50, y, 100, 25}, "Hello!");
-
-                        y += 55;
-                        painter.fillRect(RkRect(50, y, 100, 25), RkColor(255, 255, 255));
-                        painter.drawText({50, y, 100, 25}, "Hello!", Rk::Alignment::AlignLeft);
-
-                        y += 55;
-                        painter.fillRect(RkRect(50, y, 100, 25), RkColor(255, 255, 255));
-                        painter.drawText({50, y, 100, 25}, "Hello!", Rk::Alignment::AlignRight);
-
-                        painter.drawRect(RkRect(50, y, 100, 25));
-                        RkPainter paint(this);
-                        paint.drawImage(image, 0, 0);
-						*/
-                }
-				
-
-        void mouseButtonPressEvent(RkMouseEvent *event) override
+        void mouseButtonPressEvent(LgMouseEvent *event) override
         {
                 clickPoint = RkPoint(event->x(), event->y());
                 startDraw = !startDraw;
                 update();
         }
 
-        void mouseMoveEvent(RkMouseEvent* event) override
+        void mouseMoveEvent(LgMouseEvent* event) override
         {
                 if (startDraw) {
-                        clickPoint = RkPoint(event->x(), event->y());
+                        clickPoint = LgPoint(event->x(), event->y());
                         update();
                 }
         }
 
-
   private:
-        RkPoint clickPoint;
+        LgPoint clickPoint;
         bool startDraw;
-//        RkImage image;
 };
 
 int main(int arc, char **argv)
 {
     RkMain app(arc, argv);
 
-    auto widget = new PainterExample(&app);
-    widget->setTitle("Painter Example");
-    widget->setSize(350, 350);
-    widget->show();
+    auto window = new RkWidget(&app);
+    window->setTitle("Painter Example");
+    window->setSize(350, 350);
+    window->show();
+
+    auto parent = new LgWidget(window);
+    parent->setBackgroundColor(40, 40, 40);
+    parent->setTitle("Main Widget");
+    parent->setSize(window->size());
+    parent->show();
+
+    auto child = new PainterExample(parent);
+    child->setBackgroundColor(150, 150, 150);
+    child->setTitle("Child Widget");
+    child->setPosition(20, 20);
+    child->setSize(100, 100);
+    child->show();
 
     return app.exec();
 }

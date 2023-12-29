@@ -35,31 +35,33 @@
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
         : canvas {canvas}
-        , cairoContext{nullptr}
 {
         auto canvaseInfo = canvas->getCanvasInfo();
         if (!canvaseInfo) {
                 RK_LOG_ERROR("can't get canvas info");
-        } else {
-                cairoContext = cairo_create(canvaseInfo->cairo_surface);
-                if (!cairoContext) {
+        } else if (!canvaseInfo->cairo_context) {
+                canvaseInfo->cairo_context = cairo_create(canvaseInfo->cairo_surface);
+                if (!canvaseInfo->cairo_context) {
                         RK_LOG_ERROR("can't create Cairo context");
                 } else {
-                        RK_LOG_DEBUG("Cairo context created");
                         cairo_set_font_size(context(), 10);
                         cairo_set_line_width (context(), 1);
+                        RK_LOG_DEBUG("Cairo context created");
                 }
+        } else {
+                RK_LOG_DEBUG("Cairo context already exists");
         }
 }
 
 cairo_t* RkCairoGraphicsBackend::context() const
 {
-        return cairoContext;
+        return canvas->getCanvasInfo()->cairo_context;
 }
 
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
-        cairo_destroy(context());
+        //        cairo_destroy(canvas->getCanvasInfo()->cairo_context);
+        // canvas->getCanvasInfo()->cairo_context = nullptr;
 #ifdef RK_OS_WIN
         canvas->freeCanvasInfo();
 #endif // RK_OS_WIN

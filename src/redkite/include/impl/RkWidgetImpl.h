@@ -80,7 +80,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         RkRect rect() const;
-        const RkCanvasInfo* getCanvasInfo() const;
+        RkCanvasInfo* getCanvasInfo() const;
         void freeCanvasInfo();
         void update();
         static Rk::WidgetAttribute defaultWidgetAttributes();

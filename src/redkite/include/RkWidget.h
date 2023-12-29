@@ -137,6 +137,8 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           bool pointerIsOverWindow() const;
           bool isChild(RkWidget *widget);
           void setTopGraphicsWidget(LgWidget *widget);
+          RkCanvasInfo *getCanvasInfo() const override;
+          void freeCanvasInfo() override;
 
   protected:
           RK_DELCATE_IMPL_PTR(RkWidget);
@@ -161,8 +163,6 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           virtual void hoverEvent(RkHoverEvent *event);
 
  private:
-          const RkCanvasInfo *getCanvasInfo() const override;
-          void freeCanvasInfo() override;
           RK_DISABLE_COPY(RkWidget);
           RK_DISABLE_MOVE(RkWidget);
           friend class RkEventQueue;

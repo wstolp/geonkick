@@ -22,7 +22,17 @@
  */
 
 #include "RkContainer.h"
+#include "RkContainerLgWidgetItem.h"
 #include "RkContainerWidgetItem.h"
+
+RkContainer::RkContainer(LgWidget *parent, Rk::Orientation orientation)
+	: RkContainerItem(parent, ItemType::ItemContainer)
+	, containerOrientation{orientation}
+	, itemSpacing{0}
+        , isHiddenTakesPlace{false}
+{
+	setSize(parent->size());
+}
 
 RkContainer::RkContainer(RkWidget *parent, Rk::Orientation orientation)
 	: RkContainerItem(parent, ItemType::ItemContainer)
@@ -48,6 +58,17 @@ void RkContainer::addWidget(RkWidget *widget, Rk::Alignment align)
 }
 
 void RkContainer::removeWidget(RkWidget *widget)
+{
+}
+
+void RkContainer::addWidget(LgWidget *widget, Rk::Alignment align)
+{
+        auto item = new RkContainerLgWidgetItem(widget, align);
+	containerItems.push_back(item);
+	update();
+}
+
+void RkContainer::removeWidget(LgWidget *widget)
 {
 }
 

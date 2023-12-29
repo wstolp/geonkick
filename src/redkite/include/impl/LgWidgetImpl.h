@@ -27,6 +27,8 @@
 #include "LgWidget.h"
 #include "RkObjectImpl.h"
 
+class RkWidget;
+
 class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
  public:
         explicit LgWidgetImpl(LgWidget* interface,
@@ -87,11 +89,14 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
         bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
+        void setSystemWindow(RkWidget *window);
+        RkWidget* getSystemWindow() const;
 
  private:
         RK_DECALRE_INTERFACE_PTR(LgWidget);
         std::string widgetTitle;
         bool widgetClosed;
+        LgPoint widgetPosition;
         LgSize widgetMinimumSize;
         LgSize widgetMaximumSize;
         LgSize widgetSize;
@@ -106,6 +111,7 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
 	bool isWidgetSown;
         bool isGrabKeyEnabled;
         bool isPropagateGrabKey;
+        RkWidget* systemWindow;
 };
 
 #endif // LWG_WIDGET_IMPL_H

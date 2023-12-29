@@ -162,11 +162,13 @@ RkWindowId RkWidget::RkWidgetImpl::id() const
 
 void RkWidget::RkWidgetImpl::event(RkEvent *event)
 {
-        if (topGraphicsWidget)
-                topGraphicsWidget->event(event);
         switch (event->type())
         {
         case RkEvent::Type::Paint:
+                if (topGraphicsWidget) {
+                        RkPainter painter(inf_ptr);
+                        topGraphicsWidget->event(event);
+                }
                 inf_ptr->paintEvent(static_cast<RkPaintEvent*>(event));
                 break;
         case RkEvent::Type::KeyPressed:
@@ -353,7 +355,7 @@ RkRect RkWidget::RkWidgetImpl::rect() const
         return RkRect(RkPoint(0, 0), size());
 }
 
-const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
+RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
 {
         return platformWindow->getCanvasInfo();
 }

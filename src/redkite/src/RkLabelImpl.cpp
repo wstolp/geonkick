@@ -27,8 +27,8 @@
 
 RkLabel::RkLabelImpl::RkLabelImpl(RkLabel *interface,
                                   const std::string &text,
-                                  RkWidget *parent)
-    : RkWidgetImpl(static_cast<RkWidget*>(interface), parent)
+                                  LgWidget *parent)
+    : LgWidgetImpl(static_cast<LgWidget*>(interface), parent)
     , inf_ptr{interface}
     , labelText{text}
 {

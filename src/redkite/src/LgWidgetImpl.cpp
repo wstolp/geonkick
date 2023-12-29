@@ -41,6 +41,7 @@ LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent
 	, isWidgetSown{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
+        , systemWindow{nullptr}
 {
         RK_LOG_DEBUG("called");
 }
@@ -93,7 +94,13 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
         switch (event->type())
         {
         case LgEvent::Type::Paint:
-                inf_ptr->paintEvent(static_cast<LgPaintEvent*>(event));
+                {
+                        LgPainter painter(inf_ptr);
+                        painter.translate(position());
+                        painter.fillRect(rect(), background());
+                        inf_ptr->paintEvent(static_cast<LgPaintEvent*>(event));
+                        painter.translate({-position().x(), -position().y()});
+                }
                 break;
         case LgEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("LgEvent::Type::KeyPressed: " << title());
@@ -177,6 +184,12 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
                 break;
                 RK_LOG_DEBUG("LgEvent::Type::Unknown:" << title());
         }
+
+        for (auto &ch: inf_ptr->children()) {
+                auto widget = dynamic_cast<LgWidget*>(ch);
+                if (widget)
+                        widget->event(event);
+        }
 }
 
 void LgWidget::LgWidgetImpl::setSize(const LgSize &size)
@@ -231,11 +244,12 @@ void LgWidget::LgWidgetImpl::setMaximumHeight(int height)
 
 void LgWidget::LgWidgetImpl::setPosition(const LgPoint &position)
 {
+        widgetPosition = position;
 }
 
 LgPoint LgWidget::LgWidgetImpl::position() const
 {
-        return {0, 0};
+        return widgetPosition;
 }
 
 void LgWidget::LgWidgetImpl::setBorderWidth(int width)
@@ -380,3 +394,15 @@ double LgWidget::LgWidgetImpl::scaleFactor() const
 {
         return 1.0;
 }
+
+void LgWidget::LgWidgetImpl::setSystemWindow(RkWidget *window)
+{
+        systemWindow = window;
+}
+
+RkWidget* LgWidget::LgWidgetImpl::getSystemWindow() const
+{
+        return systemWindow;
+}
+
+
