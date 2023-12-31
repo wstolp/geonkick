@@ -47,12 +47,12 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickLengthKnob{nullptr}
 {
         setFixedSize(224, 276);
-        auto label = new RkLabel(this);
+        /*        auto label = new RkLabel(this);
         label->setBackgroundColor(background());
         label->setPosition(10, 0);
         label->setSize(45, 21);
         label->setImage(RkImage(label->size(), RK_IMAGE_RC(general_groupbox_label)));
-        label->show();
+        label->show();*/
         createAplitudeEnvelopeHBox();
         createFilterHBox();
         updateGui();

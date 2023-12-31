@@ -27,6 +27,30 @@
 #include "RkMain.h"
 #include "RkWidget.h"
 
+LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface,
+                                     LgMain &app,
+                                     Lg::WindowFlags flags)
+        : RkObject::RkObjectImpl(widgetInterface, nullptr, Lg::ObjectType::Widget)
+        , inf_ptr{widgetInterface}
+        , widgetClosed{false}
+        , widgetMinimumSize{0, 0}
+        , widgetMaximumSize{1000000, 1000000}
+        , widgetSize{0, 0}
+        , widgetBackground{255, 255, 255}
+        , widgetAttributes{defaultWidgetAttributes()}
+        , widgetModality{(static_cast<int>(flags) & static_cast<int>(Lg::WindowFlags::Dialog)) ? Lg::Modality::ModalTopWidget : Lg::Modality::NonModal}
+        , widgetTextColor{0, 0, 0}
+        , widgetDrawingColor{0, 0, 0}
+        , widgetPointerShape{Lg::PointerShape::Arrow}
+	, isWidgetSown{false}
+        , isGrabKeyEnabled{false}
+        , isPropagateGrabKey{true}
+        , systemWindow{new LgSystemWindow(&app)}
+{
+        RK_LOG_DEBUG("called");
+        systemWindow->setTopGraphicsWidget(widgetInterface);
+}
+
 LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent, Lg::WindowFlags flags, bool isTopWindow)
         : RkObject::RkObjectImpl(widgetInterface, parent, Lg::ObjectType::Widget)
         , inf_ptr{widgetInterface}
@@ -43,14 +67,9 @@ LgWidget::LgWidgetImpl::LgWidgetImpl(LgWidget* widgetInterface, LgWidget* parent
 	, isWidgetSown{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
-        , systemWindow{nullptr}
+        , systemWindow{LG_IMPL_PTR(parent)->getSystemWindow()}
 {
         RK_LOG_DEBUG("called");
-        if (!parent) {
-                systemWindow = new LgSystemWindow(LgApplication::getInstance());
-                systemWindow->setTopGraphicsWidget(this);
-                RK_LOG_DEBUG("LgSystemWindow created");
-        }
 }
 
 LgWidget::LgWidgetImpl::~LgWidgetImpl()
@@ -75,7 +94,7 @@ Lg::WidgetAttribute LgWidget::LgWidgetImpl::defaultWidgetAttributes()
 void LgWidget::LgWidgetImpl::show(bool b)
 {
 	isWidgetSown = b;
-        if (systemWindow)
+        if (!parent())
                 systemWindow->show(isWidgetSown);
 }
 
@@ -87,8 +106,8 @@ bool LgWidget::LgWidgetImpl::isShown() const
 void LgWidget::LgWidgetImpl::setTitle(const std::string &title)
 {
         widgetTitle = title;
-        if (systemWindow)
-                systemWindow->show(isWidgetSown);
+        if (!parent())
+                systemWindow->setTitle(widgetTitle);
 }
 
 const std::string& LgWidget::LgWidgetImpl::title() const
@@ -101,19 +120,33 @@ bool LgWidget::LgWidgetImpl::isClose() const
         return widgetClosed;
 }
 
+void LgWidget::LgWidgetImpl::processChildrenEvents(LgEvent *event)
+{
+        for (auto &ch: inf_ptr->children()) {
+                auto widget = dynamic_cast<LgWidget*>(ch);
+                if (widget)
+                        widget->event(event);
+        }
+}
+
+
 void LgWidget::LgWidgetImpl::event(LgEvent *event)
 {
         switch (event->type())
         {
         case LgEvent::Type::Paint:
-                {
-                        LgPainter painter(inf_ptr);
+        {
+                RK_LOG_DEBUG("LgEvent::Type::Paint [" << inf_ptr->title());
+                LgPainter painter(inf_ptr);
+                if (parent())
                         painter.translate(position());
-                        painter.fillRect(rect(), background());
-                        inf_ptr->paintEvent(static_cast<LgPaintEvent*>(event));
+                painter.fillRect(rect(), background());
+                inf_ptr->paintEvent(static_cast<LgPaintEvent*>(event));
+                processChildrenEvents(event);
+                if (parent())
                         painter.translate({-position().x(), -position().y()});
-                }
-                break;
+                return;
+        }
         case LgEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("LgEvent::Type::KeyPressed: " << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::KeyInputEnabled)) {
@@ -144,22 +177,34 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
                 break;
         case LgEvent::Type::MouseButtonPress:
                 RK_LOG_DEBUG("LgEvent::Type::MouseButtonPress: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled))
-                        inf_ptr->mouseButtonPressEvent(static_cast<LgMouseEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled)) {
+                        auto mouseEvent = static_cast<LgMouseEvent*>(event);
+                        mouseEvent->position(mouseEvent.globalPosition() - mapToGlobal(position()));
+                        inf_ptr->mouseButtonPressEvent(mouseEvent);
+                }
                 break;
         case LgEvent::Type::MouseDoubleClick:
                 RK_LOG_DEBUG("LgEvent::Type::MouseDoubleClick:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled))
-                        inf_ptr->mouseDoubleClickEvent(static_cast<LgMouseEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled)) {
+                        auto mouseEvent = static_cast<LgMouseEvent*>(event);
+                        mouseEvent->position(mouseEvent.globalPosition() - mapToGlobal(position()));
+                        inf_ptr->mouseDoubleClickEvent(mouseEvent);
+                }
                 break;
         case LgEvent::Type::MouseButtonRelease:
                 RK_LOG_DEBUG("LgEvent::Type::MouseButtonRelease:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled))
-                        inf_ptr->mouseButtonReleaseEvent(static_cast<LgMouseEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled)) {
+                        auto mouseEvent = static_cast<LgMouseEvent*>(event);
+                        mouseEvent->position(mouseEvent.globalPosition() - mapToGlobal(position()));
+                        inf_ptr->mouseButtonReleaseEvent(mouseEvent);
+                }
                 break;
         case LgEvent::Type::MouseMove:
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled))
-                        inf_ptr->mouseMoveEvent(static_cast<LgMouseEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Lg::WidgetAttribute::MouseInputEnabled)) {
+                        auto mouseEvent = static_cast<LgMouseEvent*>(event);
+                        mouseEvent->position(mouseEvent.globalPosition() - mapToGlobal(position()));
+                        inf_ptr->mouseMoveEvent(mouseEvent);
+                }
                 break;
         case LgEvent::Type::Drop:
                 RK_LOG_DEBUG("LgEvent::Type::Drop:" << title());
@@ -196,18 +241,14 @@ void LgWidget::LgWidgetImpl::event(LgEvent *event)
                 break;
                 RK_LOG_DEBUG("LgEvent::Type::Unknown:" << title());
         }
-
-        for (auto &ch: inf_ptr->children()) {
-                auto widget = dynamic_cast<LgWidget*>(ch);
-                if (widget)
-                        widget->event(event);
-        }
+       
+        processChildrenEvents(event);
 }
 
 void LgWidget::LgWidgetImpl::setSize(const LgSize &size)
 {
         widgetSize = size;
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setSize(size);
 }
 
@@ -239,36 +280,36 @@ int LgWidget::LgWidgetImpl::maximumHeight() const
 void LgWidget::LgWidgetImpl::setMinimumWidth(int width)
 {
         widgetMinimumSize.setWidth(width);
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setMinimumWidth(width);
 }
 
 void LgWidget::LgWidgetImpl::setMaximumWidth(int width)
 {
         widgetMaximumSize.setWidth(width);
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setMaximumWidth(width);
 }
 
 void LgWidget::LgWidgetImpl::setMinimumHeight(int height)
 {
         widgetMinimumSize.setHeight(height);
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setMinimumHeight(height);
 }
 
 void LgWidget::LgWidgetImpl::setMaximumHeight(int height)
 {
         widgetMaximumSize.setHeight(height);
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setMaximumHeight(height);
 }
 
 void LgWidget::LgWidgetImpl::setPosition(const LgPoint &position)
 {
         widgetPosition = position;
-        if (systemWindow)
-                systemWindow->setPosition(height);
+        if (!parent())
+                systemWindow->setPosition(position);
 }
 
 LgPoint LgWidget::LgWidgetImpl::position() const
@@ -299,7 +340,7 @@ const LgColor& LgWidget::LgWidgetImpl::borderColor() const
 void LgWidget::LgWidgetImpl::setBackgroundColor(const LgColor &color)
 {
         widgetBackground = color;
-        if (systemWindow)
+        if (!parent())
                 systemWindow->setBackgroundColor(color);
 }
 
@@ -315,7 +356,7 @@ LgRect LgWidget::LgWidgetImpl::rect() const
 
 void LgWidget::LgWidgetImpl::update()
 {
-        // IMPLEMENT
+        systemWindow->update();
 }
 
 Lg::Modality LgWidget::LgWidgetImpl::modality() const
@@ -412,4 +453,26 @@ bool LgWidget::LgWidgetImpl::pointerIsOverWindow() const
         return false;
 }
 
+RkWidget* LgWidget::LgWidgetImpl::getSystemWindow() const
+{
+        return systemWindow;
+}
 
+LgWidget* LgWidget::LgWidgetImpl::containsGlobalPoint(RkPoint &p) const
+{
+        return LgRect(mapToGlobal(rect.topLeft()),
+                      mapToGlobal(rect().bottomRight())).contains(p);
+}
+
+LgWidget* LgWidget::LgWidgetImpl::widgetWithPointOver(LgWidget *widget, LgMouseEvent* event)
+{
+        if (!LG_IMPL_PTR(widget)->containsGlobalPoint({event->x(), event->y()}))
+                return nullptr;
+        
+        for (auto &childObj: widget->children()) {
+                auto childWidget = dynamic_cast<LgWidget*>(childObj);
+                if (LG_IMPL_PTR(widget)->containsGlobalPoint({event->x(), event->y()}))
+                        return getMouseOverWidget(dynamic_cast<LgWidget*>(childObj), event);
+        }
+        return widget;
+}

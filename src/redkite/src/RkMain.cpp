@@ -1,5 +1,5 @@
 /**
- * File name: RkMain.cpp
+ * File name: LgMain.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2019 Iurie Nistor 
@@ -26,36 +26,36 @@
 #include "RkWidget.h"
 #include "RkMainImpl.h"
 
-RkMain::RkMain()
-        : o_ptr{std::make_unique<RkMainImpl>(this)}
+LgMain::LgMain()
+        : o_ptr{std::make_unique<LgMainImpl>(this)}
 {
 }
 
-RkMain::RkMain(int argc, char **argv)
-        : o_ptr{std::make_unique<RkMainImpl>(this, argc, argv)}
+LgMain::LgMain(int argc, char **argv)
+        : o_ptr{std::make_unique<LgMainImpl>(this, argc, argv)}
 {
 }
 
-RkMain::~RkMain()
+LgMain::~LgMain()
 {
 }
 
-bool RkMain::setTopLevelWidget(RkWidget *widget)
+bool LgMain::setTopLevelWidget(RkWidget *widget)
 {
         return o_ptr->setTopLevelWidget(widget);
 }
 
-RkWidget* RkMain::topLevelWidget(void) const
+RkWidget* LgMain::topLevelWidget(void) const
 {
         return o_ptr->topLevelWidget();
 }
 
-RkEventQueue* RkMain::eventQueue() const
+RkEventQueue* LgMain::eventQueue() const
 {
         return o_ptr->getEventQueue();
 }
 
-int RkMain::exec(bool block)
+int LgMain::exec(bool block)
 {
 	return o_ptr->exec(block);
 }

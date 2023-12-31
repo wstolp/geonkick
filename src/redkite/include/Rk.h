@@ -71,6 +71,8 @@
   class Class##Impl; \
   std::unique_ptr<Class##Impl> o_ptr
 
+#define LG_IMPL_PTR(obj) obj->impl_ptr 
+
 #define RK_DELCATE_IMPL_PTR(Class) \
   class Class##Impl; \
   Class##Impl *impl_ptr

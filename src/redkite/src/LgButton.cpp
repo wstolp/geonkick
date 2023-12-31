@@ -1,5 +1,5 @@
 /**
- * File name: RkButton.cpp
+ * File name: LgButton.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -21,42 +21,42 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "RkButton.h"
-#include "RkButtonImpl.h"
+#include "LgButton.h"
+#include "LgButtonImpl.h"
 #include "RkPainter.h"
 #include "RkEvent.h"
 
-RkButton::RkButton(RkWidget *parent)
-        : RkWidget(parent, std::make_unique<RkButtonImpl>(this, parent))
-        , impl_ptr{static_cast<RkButtonImpl*>(o_ptr.get())}
+LgButton::LgButton(LgWidget *parent)
+        : LgWidget(parent, std::make_unique<LgButtonImpl>(this, parent))
+        , impl_ptr{static_cast<LgButtonImpl*>(o_ptr.get())}
 {
         if (parent)
                 setBackgroundColor(parent->background());
 }
 
-void RkButton::setText(const std::string &text)
+void LgButton::setText(const std::string &text)
 {
         impl_ptr->setText(text);
         update();
 }
 
-std::string RkButton::text() const
+std::string LgButton::text() const
 {
         return impl_ptr->text();
 }
 
-void RkButton::setImage(const RkImage &img, RkButton::State state)
+void LgButton::setImage(const RkImage &img, LgButton::State state)
 {
         impl_ptr->setImage(img, state);
         update();
 }
 
-bool RkButton::isPressed() const
+bool LgButton::isPressed() const
 {
 	return impl_ptr->isPressed();
 }
 
-void RkButton::setPressed(bool pressed)
+void LgButton::setPressed(bool pressed)
 {
         if (isPressed() != pressed) {
                 impl_ptr->setPressed(pressed);
@@ -64,7 +64,7 @@ void RkButton::setPressed(bool pressed)
         }
 }
 
-void RkButton::setCheckable(bool b)
+void LgButton::setCheckable(bool b)
 {
         if (isCheckable() != b) {
                 setType(b ? ButtonType::ButtonCheckable : ButtonType::ButtonUncheckable);
@@ -72,17 +72,17 @@ void RkButton::setCheckable(bool b)
         }
 }
 
-bool RkButton::isCheckable() const
+bool LgButton::isCheckable() const
 {
         return type() == ButtonType::ButtonCheckable;
 }
 
-RkButton::ButtonType RkButton::type() const
+LgButton::ButtonType LgButton::type() const
 {
         return impl_ptr->type();
 }
 
-void RkButton::setType(RkButton::ButtonType type)
+void LgButton::setType(LgButton::ButtonType type)
 {
         if (impl_ptr->type() != type) {
                 impl_ptr->setType(type);
@@ -90,7 +90,7 @@ void RkButton::setType(RkButton::ButtonType type)
         }
 }
 
-void RkButton::mouseButtonPressEvent(RkMouseEvent *event)
+void LgButton::mouseButtonPressEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         if (type() == ButtonType::ButtonCheckable) {
@@ -104,7 +104,7 @@ void RkButton::mouseButtonPressEvent(RkMouseEvent *event)
         action pressed();
 }
 
-void RkButton::mouseButtonReleaseEvent(RkMouseEvent *event)
+void LgButton::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         if (type() == ButtonType::ButtonPush) {
                 setPressed(false);
@@ -113,13 +113,13 @@ void RkButton::mouseButtonReleaseEvent(RkMouseEvent *event)
         action released();
 }
 
-void RkButton::hoverEvent(RkHoverEvent *event)
+void LgButton::hoverEvent(RkHoverEvent *event)
 {
         impl_ptr->setEmphasize(event->isHover());
         update();
 }
 
-void RkButton::paintEvent(RkPaintEvent *event)
+void LgButton::paintEvent(RkPaintEvent *event)
 {
 	RK_UNUSED(event);
         RkPainter painter(this);

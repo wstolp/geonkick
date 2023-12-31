@@ -31,8 +31,11 @@ class RkWidget;
 
 class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
  public:
+        explicit LgWidgetImpl(LgWidget* widgetInterface,
+                              LgMain &app,
+                              Lg::WindowFlags flags = Lg::WindowFlags::Widget);
         explicit LgWidgetImpl(LgWidget* interface,
-                              LgWidget* parent = nullptr,
+                              LgWidget* parent,
                               Lg::WindowFlags flags = Lg::WindowFlags::Widget,
                               bool isTopWindow = false);
         LgWidgetImpl(const LgWidget &other) = delete;
@@ -46,6 +49,7 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
         void setTitle(const std::string &title);
         const std::string& title() const;
         bool isClose() const;
+        void processChildrenEvents(LgEvent *event);
         void event(LgEvent *event);
         void setSize(const LgSize &size);
         LgSize size() const;
@@ -87,6 +91,8 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
         void propagateGrabKey(bool b);
         bool propagateGrabKeyEnabled() const;
         bool pointerIsOverWindow() const;
+        RkWidget* getSystemWindow() const;
+        LgWidget* getMouseOverWidget(LgWidget *widget, LgMouseEvent* event) const;
         
  private:
         RK_DECALRE_INTERFACE_PTR(LgWidget);
@@ -100,6 +106,7 @@ class LgWidget::LgWidgetImpl : public RkObject::RkObjectImpl {
         Lg::WidgetAttribute widgetAttributes;
         Lg::Modality widgetModality;
         LgColor widgetBorderColor;
+        int widgetBorderWidth;
         LgColor widgetTextColor;
         LgColor widgetDrawingColor;
         LgFont widgetFont;

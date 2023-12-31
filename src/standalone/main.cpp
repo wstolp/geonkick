@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         }
 #endif // GEONKICK_OS_GNU
 
-        RkMain app(argc, argv);
+        LgMain app(argc, argv);
         std::string preset;
         if (argc == 2)
                 preset = argv[1];
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
         }
 
-        auto window = new MainWindow(&app, api, preset);
+        auto window = new MainWindow(app, api, preset);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(EXIT_FAILURE);

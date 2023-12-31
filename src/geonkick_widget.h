@@ -26,21 +26,22 @@
 
 #include "globals.h"
 
-#include <RkWidget.h>
+#include <LgWidget.h>
 #include <RkImage.h>
 
 class RkPaintEvent;
 class RkNativeWindowInfo;
 class ViewState;
+class LgMain;
 
-class GeonkickWidget: public RkWidget
+class GeonkickWidget: public LgWidget
 {
  public:
-        explicit GeonkickWidget(RkMain *app,
+        explicit GeonkickWidget(LgMain &app,
                                 Rk::WindowFlags flags = Rk::WindowFlags::Widget);
-        explicit GeonkickWidget(RkMain *app,
+        /*explicit GeonkickWidget(LgMain &app,
                                 const RkNativeWindowInfo &info,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);*/
         explicit GeonkickWidget(GeonkickWidget *parent,
                                 Rk::WindowFlags flags = Rk::WindowFlags::Widget);
         virtual ~GeonkickWidget() = default;
@@ -50,9 +51,9 @@ class GeonkickWidget: public RkWidget
         ViewState* viewState() const;
 
  protected:
-        void paintEvent(RkPaintEvent *event) override;
-        virtual void paintWidget(RkPaintEvent *event);
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void paintEvent(LgPaintEvent *event) override;
+        virtual void paintWidget(LgPaintEvent *event);
+        void mouseButtonPressEvent(LgMouseEvent *event) override;
 
 private:
         RkImage backgroundImage;

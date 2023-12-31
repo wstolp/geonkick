@@ -1,9 +1,9 @@
 set(RK_EXAMPLES_SOURCES_HELLO ${RK_EXAMPLES_PATH}/hello.cpp)
 set(RK_EXAMPLES_SOURCES_CHILD ${RK_EXAMPLES_PATH}/child.cpp)
 #set(RK_EXAMPLES_SOURCES_PROPERTY ${RK_EXAMPLES_PATH}/property.cpp)
-set(RK_EXAMPLES_SOURCES_LABEL ${RK_EXAMPLES_PATH}/label.cpp)
+#set(RK_EXAMPLES_SOURCES_LABEL ${RK_EXAMPLES_PATH}/label.cpp)
 #set(RK_EXAMPLES_SOURCES_WIDGET_COLORS ${RK_EXAMPLES_PATH}/widget_colors.cpp)
-set(RK_EXAMPLES_SOURCES_PAINTER ${RK_EXAMPLES_PATH}/painter.cpp)
+#set(RK_EXAMPLES_SOURCES_PAINTER ${RK_EXAMPLES_PATH}/painter.cpp)
 #set(RK_EXAMPLES_SOURCES_ACTION ${RK_EXAMPLES_PATH}/action.cpp)
 #set(RK_EXAMPLES_SOURCES_DIALOG ${RK_EXAMPLES_PATH}/dialog.cpp)
 #set(RK_EXAMPLES_SOURCES_TIMER ${RK_EXAMPLES_PATH}/timer.cpp)
@@ -26,7 +26,7 @@ else()
   target_link_libraries(hello "-lX11 -lpthread -lrt -lm -ldl -lcairo")
 endif()
 
-#if (RK_ALL_EXMAPLES)
+if (RK_EXAMPLES_SOURCES_CHILD)
 # ------------ Child Example -------
 
 add_executable(child ${RK_EXEC_OPTION}
@@ -40,6 +40,7 @@ target_link_libraries(child redkite)
   target_link_libraries(child "-lX11 -lrt -lm -ldl -lpthread -lcairo")
 #  target_link_libraries(child ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 #endif()
+endif (RK_EXAMPLES_SOURCES_CHILD)
 
 # ------------ Property -------
 
@@ -54,6 +55,7 @@ target_link_libraries(child redkite)
 
 # ------------ Label Example -------
 
+if (RK_EXAMPLES_SOURCES_LABEL)
 add_executable(label
   ${RK_HEADERS}
   ${RK_EXAMPLES_SOURCES_LABEL})
@@ -63,6 +65,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
  target_link_libraries(label "-mwindows -lstdc++ -lm -lcairo")
 else ()
  target_link_libraries(label "-lX11 -lrt -lm -ldl -lcairo")
+endif()
 endif()
 
 #------------- Widget Colors --------
@@ -77,6 +80,7 @@ endif()
 #target_link_libraries(widget_colors ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 
 # ------------ Painter Exmaple -------
+if (RK_EXAMPLES_SOURCES_PAINTER)
 add_executable(painter
   ${RK_HEADERS}
   ${RK_EXAMPLES_SOURCES_PAINTER})
@@ -88,8 +92,9 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
 else ()
  target_link_libraries(painter "-lX11 -lrt -lm -ldl -lpthread -lcairo")
 endif()
-# ------------ Action Exmaple -------
+endif (RK_EXAMPLES_SOURCES_PAINTER)
 
+# ------------ Action Exmaple -------
 #add_executable(action
 #  ${RK_HEADERS}
 #  ${RK_EXAMPLES_SOURCES_ACTION})

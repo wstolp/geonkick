@@ -1,5 +1,5 @@
 /**
- * File name: RkMainXWin.h
+ * File name: LgMainXWin.h
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2019 Iurie Nistor 
@@ -35,26 +35,26 @@ class RkEventQueueWin;
 class RkEventQueueX;
 #endif // RK_WIN_OS
 
-class RkMain::RkMainImpl
+class LgMain::LgMainImpl
 {
  public:
 
-        RkMainImpl(RkMain *interface);
-        RkMainImpl(RkMain *interface, int argc, char **argv);
-	virtual ~RkMainImpl();
-        RkMainImpl(const RkMainImpl &other) = delete;
-        RkMainImpl& operator=(const RkMainImpl &other) = delete;
-        RkMainImpl(RkMainImpl &&other) = delete;
-        RkMainImpl& operator=(RkMainImpl &&other) = delete;
+        LgMainImpl(LgMain *interface);
+        LgMainImpl(LgMain *interface, int argc, char **argv);
+	virtual ~LgMainImpl();
+        LgMainImpl(const LgMainImpl &other) = delete;
+        LgMainImpl& operator=(const LgMainImpl &other) = delete;
+        LgMainImpl(LgMainImpl &&other) = delete;
+        LgMainImpl& operator=(LgMainImpl &&other) = delete;
 	bool setTopLevelWidget(RkWidget* widget);
         RkWidget* topLevelWidget(void);
         RkEventQueue* getEventQueue() const;
 	int exec(bool block = true);
 
  private:
-        RK_DECALRE_INTERFACE_PTR(RkMain);
+        RK_DECALRE_INTERFACE_PTR(LgMain);
         RkWidget* topWidget;
         std::unique_ptr<RkEventQueue> eventQueue;
 };
 
-#endif // RK_MAIN_XWIN_H
+#endif // RK_MAIN_IMPL_H

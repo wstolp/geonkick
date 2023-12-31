@@ -1,5 +1,5 @@
 /**
- * File name: RkButton.h
+ * File name: LgButton.h
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -21,13 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_BUTTON_H
-#define RK_BUTTON_H
+#ifndef LG_BUTTON_H
+#define LG_BUTTON_H
 
-#include "RkWidget.h"
+#include "LgWidget.h"
 #include "RkImage.h"
 
-class RK_EXPORT RkButton: public RkWidget
+class LgButton: public LgWidget
 {
  public:
         enum class ButtonType: int {
@@ -43,8 +43,8 @@ class RK_EXPORT RkButton: public RkWidget
                 PressedHover   = 3
         };
 
-        explicit RkButton(RkWidget *parent);
-        virtual ~RkButton() = default;
+        explicit LgButton(LgWidget *parent);
+        virtual ~LgButton() = default;
         void setText(const std::string &text);
         std::string text() const;
         void setImage(const RkImage &img, State state = State::Unpressed);
@@ -74,9 +74,9 @@ class RK_EXPORT RkButton: public RkWidget
         virtual void paintEvent(RkPaintEvent *event) override;
 
  private:
-        RK_DELCATE_IMPL_PTR(RkButton);
-        RK_DISABLE_COPY(RkButton);
-        RK_DISABLE_MOVE(RkButton);
+        RK_DELCATE_IMPL_PTR(LgButton);
+        RK_DISABLE_COPY(LgButton);
+        RK_DISABLE_MOVE(LgButton);
 };
 
-#endif // RK_BUTTON_H
+#endif // LG_BUTTON_H

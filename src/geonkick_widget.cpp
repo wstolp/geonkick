@@ -25,10 +25,10 @@
 
 #include <RkPainter.h>
 
-GeonkickWidget::GeonkickWidget(RkMain *app,
+/*GeonkickWidget::GeonkickWidget(LgMain &app,
                                const RkNativeWindowInfo &info,
                                Rk::WindowFlags flags)
-        : RkWidget(app, info, flags)
+        : LgWidget(app, info, flags)
         , viewingState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
@@ -36,10 +36,10 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
         auto f = font();
         f.setSize(12);
         setFont(f);
-}
+        }*/
 
-GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
-        : RkWidget(app, flags)
+GeonkickWidget::GeonkickWidget(LgMain &app, Rk::WindowFlags flags)
+        : LgWidget(app, flags)
         , viewingState{nullptr}
 {
         setBackgroundColor({68, 68, 70});
@@ -50,7 +50,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
 }
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
-        : RkWidget(parent, flags)
+        : LgWidget(parent, flags)
         , viewingState{parent->viewState()}
 {
         setBackgroundColor(68, 68, 70);

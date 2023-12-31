@@ -1,13 +1,11 @@
 #include "RkMain.h"
 #include "LgWidget.h"
-#include "RkLog.h"
 
 int main(int arc, char **argv)
 {
-    RK_LOG_INFO("called");
-    RkMain app(arc, argv);
+    LgMain app(arc, argv);
 
-    auto widget = new LgWidget();
+    auto widget = new LgWidget(app);
     widget->setTitle("Hello!");
     widget->setBackgroundColor({80, 80, 80});
     widget->show();

@@ -1,5 +1,5 @@
 /**
- * File name: RkMain.h
+ * File name: LgMain.h
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2019 Iurie Nistor 
@@ -21,31 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_MAIN_H
-#define RK_MAIN_H
+#ifndef LG_MAIN_H
+#define LG_MAIN_H
 
 #include "Rk.h"
 
-class LgSystemWindow;
 class RkEventQueue;
+class RkWidget;
 
-class RK_EXPORT RkMain {
+class LgMain {
   public:
-          RkMain();
-          RkMain(int argc, char **argv);
-          ~RkMain();
-          bool setTopLevelWidget(LgSystemWindow* widget);
-          LgSystemWindow* topLevelWidget(void) const;
+          LgMain();
+          LgMain(int argc, char **argv);
+          virtual ~LgMain();
+          bool setTopLevelWidget(RkWidget* widget);
+          RkWidget* topLevelWidget(void) const;
           int exec(bool block = true);
           RkEventQueue* eventQueue() const;
-          static getInstance();
 
  private:
-       	  RK_DECLARE_IMPL(RkMain);
-          RK_DISABLE_COPY(RkMain);
-          RK_DISABLE_MOVE(RkMain);
+       	  RK_DECLARE_IMPL(LgMain);
+          RK_DISABLE_COPY(LgMain);
+          RK_DISABLE_MOVE(LgMain);
 };
 
-using LgApplication = RkMain;
-
-#endif // RK_MAIN_H
+#endif // LG_MAIN_H

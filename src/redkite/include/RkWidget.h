@@ -45,7 +45,7 @@ class RkShowEvent;
 class RkHideEvent;
 class RkFocusEvent;
 class RkHoverEvent;
-class RkMain;
+class LgMain;
 struct RkWindowId;
 class RkNativeWindowInfo;
 class LgWidget;
@@ -56,8 +56,8 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           RK_CLASS_INFO(style_class, "")
           RK_CLASS_INFO(style_id, "")
 
-          explicit RkWidget(RkMain *mainApp, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
-          explicit RkWidget(RkMain *mainApp,
+          explicit RkWidget(LgMain *mainApp, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+          explicit RkWidget(LgMain *mainApp,
                             const RkNativeWindowInfo &parent,
                             Rk::WindowFlags flags = Rk::WindowFlags::Widget);
           explicit RkWidget(RkWidget *parent, Rk::WindowFlags flags = Rk::WindowFlags::Widget);

@@ -69,12 +69,12 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         auto hContainer = new RkContainer(this);
         hContainer->setSize({vContainer->width(), sliderH});
-        auto attackLabel = new RkLabel(this);
+        /*auto attackLabel = new RkLabel(this);
         attackLabel->setBackgroundColor(background());
         attackLabel->setFixedSize(53, 14);
         attackLabel->setImage(RkImage(attackLabel->size(), RK_IMAGE_RC(compressor_attack_label)));
         attackLabel->show();
-        hContainer->addWidget(attackLabel);
+        hContainer->addWidget(attackLabel);*/
         attackSlider = new GeonkickSlider(this);
         attackSlider->setFixedSize(sliderW, 12);
         attackSlider->onSetValue(50);
@@ -82,12 +82,12 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         hContainer->addSpace(3);
         hContainer->addWidget(attackSlider);
 
-        auto ratioLabel = new RkLabel(this);
+        /*auto ratioLabel = new RkLabel(this);
         ratioLabel->setBackgroundColor(background());
         ratioLabel->setFixedSize(53, 14);
         ratioLabel->setImage(RkImage(ratioLabel->size(), RK_IMAGE_RC(compressor_ratio_label)));
         ratioLabel->show();
-        hContainer->addWidget(ratioLabel);
+        hContainer->addWidget(ratioLabel);*/
         ratioSlider = new GeonkickSlider(this);
         ratioSlider->setFixedSize(sliderW, 12);
         RK_ACT_BIND(ratioSlider, valueUpdated, RK_ACT_ARGS(int value), this, setRatio(value));
@@ -97,24 +97,24 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         hContainer = new RkContainer(this);
         hContainer->setSize({vContainer->width(), sliderH});
-        auto thresholdLabel = new RkLabel(this);
+        /*        auto thresholdLabel = new RkLabel(this);
         thresholdLabel->setBackgroundColor(background());
         thresholdLabel->setFixedSize(53, 14);
         thresholdLabel->setImage(RkImage(thresholdLabel->size(), RK_IMAGE_RC(compressor_threshold_label)));
         thresholdLabel->show();
-        hContainer->addWidget(thresholdLabel);
+        hContainer->addWidget(thresholdLabel);*/
         thresholdSlider = new GeonkickSlider(this);
         thresholdSlider->setFixedSize(sliderW, 12);
         RK_ACT_BIND(thresholdSlider, valueUpdated, RK_ACT_ARGS(int value), this, setThreshold(value));
         hContainer->addSpace(3);
         hContainer->addWidget(thresholdSlider);
 
-        auto makeupLabel = new RkLabel(this);
+        /*        auto makeupLabel = new RkLabel(this);
         makeupLabel->setFixedSize(53, 14);
         makeupLabel->setBackgroundColor(background());
         makeupLabel->setImage(RkImage(makeupLabel->size(), RK_IMAGE_RC(compressor_makeup_label)));
         makeupLabel->show();
-        hContainer->addWidget(makeupLabel);
+        hContainer->addWidget(makeupLabel);*/
         makeupSlider = new GeonkickSlider(this);
         makeupSlider->setFixedSize(sliderW, 12);
         RK_ACT_BIND(makeupSlider, valueUpdated, RK_ACT_ARGS(int value), this, setMakeup(value));

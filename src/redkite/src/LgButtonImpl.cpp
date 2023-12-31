@@ -1,5 +1,5 @@
 /**
- * File name: RkButtonImpl.cpp
+ * File name: LgButtonImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -21,74 +21,74 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "RkButtonImpl.h"
+#include "LgButtonImpl.h"
 
-RkButton::RkButtonImpl::RkButtonImpl(RkButton *interface, RkWidget *parent)
-    : RkWidgetImpl(static_cast<RkWidget*>(interface), parent)
+LgButton::LgButtonImpl::LgButtonImpl(LgButton *interface, LgWidget *parent)
+    : LgWidgetImpl(static_cast<LgWidget*>(interface), parent)
     , inf_ptr{interface}
     , buttonType{ButtonType::ButtonUncheckable}
     , is_pressed{false}
-    , buttonState{RkButton::State::Unpressed}
+    , buttonState{LgButton::State::Unpressed}
     , isEmphasizeEnabled{false}
 {
 }
 
-void RkButton::RkButtonImpl::setText(const RkString &text)
+void LgButton::LgButtonImpl::setText(const RkString &text)
 {
         buttonText = text;
 }
 
-RkString RkButton::RkButtonImpl::text() const
+RkString LgButton::LgButtonImpl::text() const
 {
         return buttonText;
 }
 
-void RkButton::RkButtonImpl::setImage(const RkImage &img, RkButton::State state)
+void LgButton::LgButtonImpl::setImage(const RkImage &img, LgButton::State state)
 {
         buttonImages[static_cast<size_t>(state)] = img;
-        if (state == RkButton::State::Unpressed)
+        if (state == LgButton::State::Unpressed)
                 inf_ptr->setSize(img.size());
 }
 
-bool RkButton::RkButtonImpl::isPressed() const
+bool LgButton::LgButtonImpl::isPressed() const
 {
         return is_pressed;
 }
 
-void RkButton::RkButtonImpl::setPressed(bool pressed)
+void LgButton::LgButtonImpl::setPressed(bool pressed)
 {
         is_pressed = pressed;
         isEmphasizeEnabled = false;
         updateButtonState();
 }
 
-void RkButton::RkButtonImpl::setType(RkButton::ButtonType type)
+void LgButton::LgButtonImpl::setType(LgButton::ButtonType type)
 {
         buttonType = type;
         updateButtonState();
 }
 
-RkButton::ButtonType RkButton::RkButtonImpl::type(void) const
+LgButton::ButtonType LgButton::LgButtonImpl::type(void) const
 {
         return buttonType;
 }
 
-void RkButton::RkButtonImpl::drawButton(RkPainter &painter)
+void LgButton::LgButtonImpl::drawButton(RkPainter &painter)
 {
         if (isPressed()) {
                 if (!buttonImages[static_cast<size_t>(buttonState)].isNull())
                         painter.drawImage(buttonImages[static_cast<size_t>(buttonState)], 0, 0);
-                else if (!buttonImages[static_cast<size_t>(RkButton::State::Pressed)].isNull())
-                        painter.drawImage(buttonImages[static_cast<size_t>(RkButton::State::Pressed)], 0, 0);
-                else if (!buttonImages[static_cast<size_t>(RkButton::State::Unpressed)].isNull())
-                        painter.drawImage(buttonImages[static_cast<size_t>(RkButton::State::Unpressed)], 0, 0);
-        } else if (!buttonImages[static_cast<size_t>(RkButton::State::Unpressed)].isNull()) {
+                else if (!buttonImages[static_cast<size_t>(LgButton::State::Pressed)].isNull())
+                        painter.drawImage(buttonImages[static_cast<size_t>(LgButton::State::Pressed)], 0, 0);
+                else if (!buttonImages[static_cast<size_t>(LgButton::State::Unpressed)].isNull())
+                        painter.drawImage(buttonImages[static_cast<size_t>(LgButton::State::Unpressed)], 0, 0);
+        } else if (!buttonImages[static_cast<size_t>(LgButton::State::Unpressed)].isNull()) {
                 if (!buttonImages[static_cast<size_t>(buttonState)].isNull())
                         painter.drawImage(buttonImages[static_cast<size_t>(buttonState)], 0, 0);
                 else
-                        painter.drawImage(buttonImages[static_cast<size_t>(RkButton::State::Unpressed)], 0, 0);
-        } else if (!buttonImages[static_cast<size_t>(RkButton::State::Unpressed)].isNull()) {
-                painter.drawImage(buttonImages[static_cast<size_t>(RkButton::State::Unpressed)], 0, 0);
+                        painter.drawImage(buttonImages[static_cast<size_t>(LgButton::State::Unpressed)], 0, 0);
+        } else if (!buttonImages[static_cast<size_t>(LgButton::State::Unpressed)].isNull()) {
+                painter.drawImage(buttonImages[static_cast<size_t>(LgButton::State::Unpressed)], 0, 0);
         }
 
         if (!buttonText.empty()) {
@@ -99,24 +99,23 @@ void RkButton::RkButtonImpl::drawButton(RkPainter &painter)
         }
 }
 
-void RkButton::RkButtonImpl::setEmphasize(bool b)
+void LgButton::LgButtonImpl::setEmphasize(bool b)
 {
         isEmphasizeEnabled = b;
         updateButtonState();
 }
 
-void RkButton::RkButtonImpl::updateButtonState()
+void LgButton::LgButtonImpl::updateButtonState()
 {
         if (isPressed()) {
                 if (isEmphasizeEnabled)
-                        buttonState = RkButton::State::PressedHover;
+                        buttonState = LgButton::State::PressedHover;
                 else
-                        buttonState = RkButton::State::Pressed;
+                        buttonState = LgButton::State::Pressed;
         } else {
                 if (isEmphasizeEnabled)
-                        buttonState = RkButton::State::UnpressedHover;
+                        buttonState = LgButton::State::UnpressedHover;
                 else
-                        buttonState = RkButton::State::Unpressed;
+                        buttonState = LgButton::State::Unpressed;
         }
 }
-

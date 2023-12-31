@@ -27,31 +27,21 @@
 #include "Rk.h"
 #include "RkEvent.h"
 #include "LgObject.h"
-#include "RkCanvas.h"
 #include "RkRect.h"
 #include "RkColor.h"
 #include "RkFont.h"
+#include "RkCanvas.h"
 
-/*class LgEvent;
-class LgCloseEvent;
-class LgKeyEvent;
-class LgMouseEvent;
-class LgWheelEvent;
-class LgDropEvent;
-class LgMoveEvent;
-class LgResizeEvent;
-class LgPaintEvent;
-class LgShowEvent;
-class LgHideEvent;
-class LgFocusEvent;
-class LgHoverEvent;*/
+class LgMain;
 
-class LgWidget: public LgObject, public RkCanvas {
+class LgWidget: public LgObject, public LgCanvas {
   public:
           RK_CLASS_INFO(style_element, "LgWidget")
           RK_CLASS_INFO(style_class, "")
           RK_CLASS_INFO(style_id, "")
-          explicit LgWidget(LgWidget *parent = nullptr,
+          explicit LgWidget(LgMain& app,
+                            Lg::WindowFlags flags = Lg::WindowFlags::Widget);
+          explicit LgWidget(LgWidget *parent,
                             Lg::WindowFlags flags = Lg::WindowFlags::Widget);
           virtual ~LgWidget();
           Lg::WindowFlags windowFlags() const;
@@ -126,6 +116,7 @@ class LgWidget: public LgObject, public RkCanvas {
           double scaleFactor() const;
           bool pointerIsOverWindow() const;
           bool isChild(LgWidget *widget);
+          LgPoint mapToGlobal(const LgPoint &p);
         
   protected:
           RK_DELCATE_IMPL_PTR(LgWidget);
@@ -150,9 +141,10 @@ class LgWidget: public LgObject, public RkCanvas {
           virtual void hoverEvent(LgHoverEvent *event);
 
  private:
+          RkCanvasInfo* getCanvasInfo() const override;
+          void freeCanvasInfo() override;
           RK_DISABLE_COPY(LgWidget);
           RK_DISABLE_MOVE(LgWidget);
-          friend class RkWidget;
 };
 
 #endif // LGW_WIDGET_H

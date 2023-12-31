@@ -79,12 +79,12 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         inLimiterSlider->setPosition(width() / 2 + labelD / 2, yoffset + (height() - sliderH) / 3);
         inLimiterSlider->onSetValue(50);
         RK_ACT_BIND(inLimiterSlider, valueUpdated, RK_ACT_ARGS(int val), this, setInLimiter(val));
-        auto inLimiterLabel = new RkLabel(this);
+        /*        auto inLimiterLabel = new RkLabel(this);
         inLimiterLabel->setBackgroundColor(background());
         inLimiterLabel->show();
         inLimiterLabel->setFixedSize(53, 14);
         inLimiterLabel->setImage(RkImage(inLimiterLabel->size(), RK_IMAGE_RC(distortion_in_limiter)));
-        inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());
+        inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());*/
 
         // Volume
         volumeSlider = new GeonkickSlider(this);

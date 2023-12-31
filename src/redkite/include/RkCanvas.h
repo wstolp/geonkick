@@ -32,8 +32,10 @@ class RkCanvas {
  public:
         RkCanvas() = default;
         virtual ~RkCanvas() = default;
-        virtual RkCanvasInfo* getCanvasInfo() const = 0;
-        virtual void freeCanvasInfo() = 0;
+        virtual RkCanvasInfo* getCanvasInfo() const { return nullptr; }
+        virtual void freeCanvasInfo() {}
 };
+
+using LgCanvas = RkCanvas;
 
 #endif // RK_CANVAS_H

@@ -165,12 +165,12 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
         switch (event->type())
         {
         case RkEvent::Type::Paint:
-                if (topGraphicsWidget) {
+                {
                         RkPainter painter(inf_ptr);
-                        topGraphicsWidget->event(event);
+                        static_cast<LgObject*>(topGraphicsWidget)->event(event);
+                        inf_ptr->paintEvent(static_cast<RkPaintEvent*>(event));
+                        return;
                 }
-                inf_ptr->paintEvent(static_cast<RkPaintEvent*>(event));
-                break;
         case RkEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("RkEvent::Type::KeyPressed: " << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled)) {
@@ -255,6 +255,7 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 break;
                 RK_LOG_DEBUG("RkEvent::Type::Unknown:" << title());
         }
+        static_cast<LgObject*>(topGraphicsWidget)->event(event);
 }
 
 void RkWidget::RkWidgetImpl::setSize(const RkSize &size)

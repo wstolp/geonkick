@@ -28,7 +28,7 @@
 #include "RkPlatform.h"
 #include "RkMain.h"
 
-RkWidget::RkWidget(RkMain *mainApp, Rk::WindowFlags flags)
+RkWidget::RkWidget(LgMain *mainApp, Rk::WindowFlags flags)
         : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, nullptr, flags, true))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
@@ -36,7 +36,7 @@ RkWidget::RkWidget(RkMain *mainApp, Rk::WindowFlags flags)
         mainApp->setTopLevelWidget(this);
 }
 
-RkWidget::RkWidget(RkMain *mainApp, const RkNativeWindowInfo &parent, Rk::WindowFlags flags)
+RkWidget::RkWidget(LgMain *mainApp, const RkNativeWindowInfo &parent, Rk::WindowFlags flags)
         : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, parent, flags, true))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {

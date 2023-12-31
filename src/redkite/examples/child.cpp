@@ -30,39 +30,48 @@
 
 int main(int arc, char **argv)
 {
-        RkMain app(arc, argv);
+        LgMain app(arc, argv);
 
         // Create main window.
-        auto mainWindow = new RkWidget(&app);
+        auto mainWindow = new LgWidget(app);
         mainWindow->setTitle("Main Window");
         mainWindow->setPosition(180, 180);
         mainWindow->setSize(400, 500);
-        mainWindow->setBackgroundColor(0, 255, 0);
+        mainWindow->setBackgroundColor(80, 80, 80);
 
         int x = 10;
         int y = 10;
         RK_LOG_DEBUG("create childs");
-        for (auto i = 0; i < 10; i++) {
-                RK_LOG_DEBUG("create child " << i);
+        auto n = mainWindow->size().area() / RkSize(60, 60).area();
+        for (auto i = 0; i < n; i++) {
                 auto child = new LgWidget(mainWindow);
                 child->setTitle("Child[" + std::to_string(i) + "] - LEVEL 1");
                 child->setSize(60, 60);
                 child->setPosition(x, y);
-                child->setBorderColor(0, 255, 0);
-                child->setBackgroundColor(0, 0, 255);
+                child->setBackgroundColor((5 * i) % 255, (10 * i) % 255, (20 * i) % 255);
                 child->show();
 
-                //auto child_l = new RkWidget(child);
-                //child_l->setTitle("Child[" + std::to_string(i) + "] - LEVEL 2");
-                //child_l->setPosition(10, 10);
-                //child_l->setSize(30, 30);
-                //child_l->setBorderColor(0, 0, 255);
-                //child_l->setBackgroundColor(255, 0, 0);
-                //child_l->show();
+                auto child_l = new LgWidget(child);
+                child_l->setTitle("Child[" + std::to_string(i) + "] - LEVEL 2");
+                child_l->setPosition(10, 10);
+                child_l->setSize(30, 30);
+                child_l->setBorderColor(0, 0, 255);
+                child_l->setBackgroundColor(255, 0, 0);
+                child_l->show();
 
-                x += 65;
-                if (x > 650) {
-                        y += 65;
+                for (size_t k = 0; k < 5; k++) {
+                        auto c = new LgWidget(child_l);
+                        c->setTitle("Child[" + std::to_string(i) + "] - LEVEL 3");
+                        c->setPosition(5 * k + 3, 5 * k + 3);
+                        c->setSize(5, 5);
+                        c->setBorderColor(10, 10, 10);
+                        c->setBackgroundColor(10, 10, 10);
+                        c->show();
+                }
+
+                x += child->width() + 5;
+                if (x > mainWindow->width()) {
+                        y += child->height() + 5;
                         x = 10;
                 }
         }

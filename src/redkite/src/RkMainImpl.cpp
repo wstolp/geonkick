@@ -1,5 +1,5 @@
 /**
- * File name: RkMainImpl.cpp
+ * File name: LgMainImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2019 Iurie Nistor
@@ -30,7 +30,7 @@
 #include <chrono>
 #include <thread>
 
-RkMain::RkMainImpl::RkMainImpl(RkMain *interfaceMain)
+LgMain::LgMainImpl::LgMainImpl(LgMain *interfaceMain)
         : inf_ptr{interfaceMain}
         , topWidget{nullptr}
         , eventQueue{std::make_unique<RkEventQueue>()}
@@ -39,7 +39,7 @@ RkMain::RkMainImpl::RkMainImpl(RkMain *interfaceMain)
         RK_LOG_DEBUG("called");
 }
 
-RkMain::RkMainImpl::RkMainImpl(RkMain *interfaceMain, int argc, char **argv)
+LgMain::LgMainImpl::LgMainImpl(LgMain *interfaceMain, int argc, char **argv)
         : inf_ptr{interfaceMain}
         , topWidget{nullptr}
         , eventQueue{std::make_unique<RkEventQueue>()}
@@ -50,13 +50,13 @@ RkMain::RkMainImpl::RkMainImpl(RkMain *interfaceMain, int argc, char **argv)
         RK_LOG_DEBUG("called");
 }
 
-RkMain::RkMainImpl::~RkMainImpl()
+LgMain::LgMainImpl::~LgMainImpl()
 {
         delete topWidget;
         RK_LOG_DEBUG("called");
 }
 
-bool RkMain::RkMainImpl::setTopLevelWidget(RkWidget* widget)
+bool LgMain::LgMainImpl::setTopLevelWidget(RkWidget* widget)
 {
       if (topWidget || !widget)
               return false;
@@ -67,17 +67,17 @@ bool RkMain::RkMainImpl::setTopLevelWidget(RkWidget* widget)
       return true;
 }
 
-RkWidget* RkMain::RkMainImpl::topLevelWidget(void)
+RkWidget* LgMain::LgMainImpl::topLevelWidget(void)
 {
       return topWidget;
 }
 
-RkEventQueue* RkMain::RkMainImpl::getEventQueue() const
+RkEventQueue* LgMain::LgMainImpl::getEventQueue() const
 {
         return eventQueue.get();
 }
 
-int RkMain::RkMainImpl::exec(bool block)
+int LgMain::LgMainImpl::exec(bool block)
 {
         if (!topLevelWidget()) {
                 RK_LOG_ERROR("top window not defined");

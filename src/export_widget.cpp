@@ -92,12 +92,12 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         setTitle("Export - " + std::string(GEONKICK_NAME));
         setBackgroundImage(RkImage(521, 184, RK_IMAGE_RC(export_bk)));
 
-        errorLabel = new RkLabel(this);
+        /*        errorLabel = new RkLabel(this);
         errorLabel->setFixedSize(150, 15);
         errorLabel->setBackgroundColor(background());
         errorLabel->setPosition(width() - 180, 105);
         errorLabel->setTextColor({200, 0, 0});
-        errorLabel->hide();
+        errorLabel->hide();*/
 
         locationEdit = new RkLineEdit(this);
         locationEdit->setFont(font());

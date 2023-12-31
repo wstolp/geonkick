@@ -24,8 +24,15 @@
 #include "RkLog.h"
 #include "RkEvent.h"
 #include "LgWidget.h"
+#include "RkMain.h"
 #include "LgWidgetImpl.h"
 #include "RkWidget.h"
+
+LgWidget::LgWidget(LgMain& app, Lg::WindowFlags flags)
+        : LgObject(nullptr, std::make_unique<LgWidgetImpl>(this, app, flags))
+        , impl_ptr{static_cast<LgWidgetImpl*>(o_ptr.get())}
+{
+}
 
 LgWidget::LgWidget(LgWidget *parent, Lg::WindowFlags flags)
         : LgObject(parent, std::make_unique<LgWidgetImpl>(this, parent, flags))
@@ -493,7 +500,7 @@ LgRect LgWidget::rect() const
 
 void LgWidget::close()
 {
-        eventQueue()->postEvent(this, std::make_unique<LgCloseEvent>());
+        //        eventQueue()->postEvent(this, std::make_unique<LgCloseEvent>());
 }
 
 bool LgWidget::isModal() const
@@ -567,3 +574,11 @@ bool LgWidget::isChild(LgWidget *widget)
         return false;
 }
 
+RkCanvasInfo* LgWidget::getCanvasInfo() const
+{
+        return impl_ptr->getSystemWindow()->getCanvasInfo();
+}
+
+void LgWidget::freeCanvasInfo()
+{
+}

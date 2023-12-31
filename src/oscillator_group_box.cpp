@@ -234,17 +234,17 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), RK_IMAGE_RC(button_browse_sample)));
         RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());
 
-        auto phaseLabel = new RkLabel(waveFunctionHBox);
+        /*        auto phaseLabel = new RkLabel(waveFunctionHBox);
         phaseLabel->setFixedSize(30, 8);
         phaseLabel->setPosition(sineButton->x(), sawtoothButton->y() + sawtoothButton->height() + 8);
         phaseLabel->setBackgroundColor(waveFunctionHBox->background());
         phaseLabel->setImage(RkImage(phaseLabel->size(), RK_IMAGE_RC(phase_label)));
-        phaseLabel->show();
+        phaseLabel->show();*/
 
         phaseSlider = new GeonkickSlider(waveFunctionHBox);
         phaseSlider->setFixedSize(150, 8);
         phaseSlider->onSetValue(50);
-        phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
+        //        phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
         phaseSlider->show();
         RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
 }
@@ -318,14 +318,14 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 noiseBrownianButton->setPressedImage(RkImage(90, 30, RK_IMAGE_RC(noise_type_brownian_active)));
                 noiseBrownianButton->show();
 
-                auto seedLabel = new RkLabel(amplitudeEnvelopeBox, "Seed");
+                /*                auto seedLabel = new RkLabel(amplitudeEnvelopeBox, "Seed");
                 seedLabel->setFixedSize(30, 10);
                 seedLabel->setTextColor({210, 226, 226, 160});
                 seedLabel->setPosition(noiseBrownianButton->x()
                                        + (noiseBrownianButton->width() - seedLabel->width()) / 2,
                                        noiseBrownianButton->y() + noiseBrownianButton->height() + 7);
                 seedLabel->setBackgroundColor(amplitudeEnvelopeBox->background());
-                seedLabel->show();
+                seedLabel->show();*/
 
                 seedSlider = new GeonkickSlider(amplitudeEnvelopeBox);
                 seedSlider->setFixedSize(115, 8);

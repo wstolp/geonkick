@@ -31,19 +31,19 @@
 class Oscillator;
 class GeonkickApi;
 class TopBar;
-class EnvelopeWidget;
-class ControlArea;
-class Limiter;
+//class EnvelopeWidget;
+//class ControlArea;
+//class Limiter;
 
 class MainWindow : public GeonkickWidget
 {
  public:
-      explicit MainWindow(RkMain* app,
+      explicit MainWindow(LgMain &app,
                           GeonkickApi *api,
                           const std::string &preset = std::string());
-      explicit MainWindow(RkMain* app,
+        /*      explicit MainWindow(LgMain &app,
                           GeonkickApi *api,
-                          const RkNativeWindowInfo &info);
+                          const RkNativeWindowInfo &info);*/
       ~MainWindow();
       bool init(void);
       static RkSize getWindowSize();
@@ -71,11 +71,11 @@ class MainWindow : public GeonkickWidget
       GeonkickApi *geonkickApi;
       std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
-      EnvelopeWidget* envelopeWidget;
-      ControlArea* controlAreaWidget;
+        //EnvelopeWidget* envelopeWidget;
+        //ControlArea* controlAreaWidget;
       std::string presetName;
       std::string currentWorkingPath;
-      Limiter *limiterWidget;
+        //Limiter *limiterWidget;
       KitModel *kitModel;
 };
 

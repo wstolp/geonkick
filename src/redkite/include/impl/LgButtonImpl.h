@@ -1,5 +1,5 @@
 /**
- * File name: RkButtonImpl.h
+ * File name: LgButtonImpl.h
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -21,21 +21,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_LABEL_IMPL_H
-#define RK_LABEL_IMPL_H
+#ifndef LG_BUTTON_IMPL_H
+#define LG_BUTTON_IMPL_H
 
-#include "RkWidgetImpl.h"
-#include "RkButton.h"
+#include "LgWidgetImpl.h"
+#include "LgButton.h"
 #include "RkImageImpl.h"
 #include "RkPainter.h"
 
-class RkButton::RkButtonImpl : public RkWidget::RkWidgetImpl {
+class LgButton::LgButtonImpl : public LgWidget::LgWidgetImpl {
  public:
-        RkButtonImpl(RkButton *interface, RkWidget *parent = nullptr);
-        virtual ~RkButtonImpl() = default;
+        LgButtonImpl(LgButton *interface, LgWidget *parent = nullptr);
+        virtual ~LgButtonImpl() = default;
         void setText(const RkString &text);
         RkString text() const;
-        void setImage(const RkImage &img, RkButton::State type);
+        void setImage(const RkImage &img, LgButton::State type);
         bool isPressed() const;
         void setPressed(bool pressed);
         ButtonType type() const;
@@ -48,13 +48,13 @@ class RkButton::RkButtonImpl : public RkWidget::RkWidgetImpl {
         void updateButtonState();
 
  private:
-        RK_DECALRE_INTERFACE_PTR(RkButton);
+        RK_DECALRE_INTERFACE_PTR(LgButton);
         ButtonType buttonType;
         bool is_pressed;
         std::array<RkImage, 4> buttonImages;
-        RkButton::State buttonState;
+        LgButton::State buttonState;
         bool isEmphasizeEnabled;
         RkString buttonText;
 };
 
-#endif // RK_LABEL_H
+#endif // LG_BUTTON_IMPL_H

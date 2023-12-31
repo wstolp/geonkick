@@ -28,7 +28,7 @@
 #include "geonkick_api.h"
 
 class RkLabel;
-class GeonkickButton;
+//class GeonkickButton;
 class RkContainer;
 class ViewState;
 class KitModel;
@@ -58,23 +58,23 @@ class TopBar : public GeonkickWidget
         void createLyersButtons(RkContainer *mainLayout);
         void addSeparator(RkContainer *mainLayout, int width = 5);
         KitModel *kitModel;
-        GeonkickButton *openFileButton;
-        GeonkickButton *saveFileButton;
+        //        GeonkickButton *openFileButton;
+        //        GeonkickButton *saveFileButton;
 #ifndef GEONKICK_OS_WINDOWS
-        GeonkickButton *exportFileButton;
+        //        GeonkickButton *exportFileButton;
 #endif // GEONKICK_OS_WINDOWS
-        RkLabel* presetNameLabel;
-        GeonkickButton *layer1Button;
-        GeonkickButton *layer2Button;
-        GeonkickButton *layer3Button;
-        GeonkickButton *tuneCheckbox;
-        GeonkickButton *controlsButton;
-        GeonkickButton *midiKeyButton;
+        //        RkLabel* presetNameLabel;
+        //        GeonkickButton *layer1Button;
+        //        GeonkickButton *layer2Button;
+        //        GeonkickButton *layer3Button;
+        //        GeonkickButton *tuneCheckbox;
+        //        GeonkickButton *controlsButton;
+        //        GeonkickButton *midiKeyButton;
 #ifndef GEONKICK_SINGLE
-        GeonkickButton *kitButton;
+        //        GeonkickButton *kitButton;
 #endif // GEONKICK_SINGLE
-        GeonkickButton *presetsButton;
-        GeonkickButton *samplesButton;
+        //        GeonkickButton *presetsButton;
+        //        GeonkickButton *samplesButton;
 };
 
 #endif // GEONKICK_TOP_BAR_H
