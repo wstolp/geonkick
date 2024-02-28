@@ -23,6 +23,7 @@
 
 #include "preset_browser_view.h"
 #include "preset_browser_model.h"
+#include "preset.h"
 
 #include <RkPainter.h>
 #include <RkImage.h>
@@ -53,7 +54,7 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         , prevFolderPageButton{nullptr}
         , bottomContainer{nullptr}
 {
-        setSize(620, 290);
+        setSize(850, 350);
         RK_ACT_BIND(browserModel, folderSelected, RK_ACT_ARGS(PresetFolder*), this, update());
         RK_ACT_BIND(browserModel, presetSelected, RK_ACT_ARGS(Preset*), this, update());
         RK_ACT_BIND(browserModel, presetPageChanged, RK_ACT_ARGS(), this, updatePageButtons());
@@ -121,6 +122,60 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         setBackgroundColor({60, 60, 60});
 }
 
+void PresetBrowserView::drawMetadata(RkPainter &painter)
+{
+        RkRect metadataRect(width() - 230, 0, 230, height());
+        painter.fillRect(metadataRect, {90, 90, 90});
+        auto preset = browserModel->getSelectedPreset();
+        if (!preset)
+                return;
+
+        painter.setPen(RkColor(230, 230, 230));
+        auto font = painter.font();
+        font.setWeight(RkFont::Weight::Bold);
+        font.setSize(12);
+        painter.setFont(font);
+        int textLineHeight = font.size() + 4;
+        auto textRect = RkRect(metadataRect.left() + 10,
+                               metadataRect.top() + 10,
+                               metadataRect.width() - 20,
+                               textLineHeight);
+
+        painter.drawText(textRect, "Name:",  Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        painter.drawText(textRect, "Author:", Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        if (!preset->url().empty()) {
+                painter.drawText(textRect, "Web:", Rk::Alignment::AlignLeft);
+                textRect.translate(0, textLineHeight);
+        }
+        painter.drawText(textRect, "License:", Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        if (!preset->category().empty())
+                painter.drawText(textRect, "Category:", Rk::Alignment::AlignLeft);
+
+        textRect = RkRect(metadataRect.left() + 75,
+                          metadataRect.top() + 10,
+                          metadataRect.width() - 20,
+                          textLineHeight);
+        font = painter.font();
+        font.setWeight(RkFont::Weight::Normal);
+        painter.setFont(font);
+        
+        painter.drawText(textRect, preset->name(), Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        painter.drawText(textRect, preset->author(), Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        if (!preset->url().empty()) {
+                painter.drawText(textRect, preset->url(), Rk::Alignment::AlignLeft);
+                textRect.translate(0, textLineHeight);
+        }
+        painter.drawText(textRect, preset->license(), Rk::Alignment::AlignLeft);
+        textRect.translate(0, textLineHeight);
+        if (!preset->category().empty())
+                painter.drawText(textRect, preset->category(), Rk::Alignment::AlignLeft);
+}
+
 void PresetBrowserView::paintWidget(RkPaintEvent *event)
 {
         RkImage img(size());
@@ -164,6 +219,9 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                         yRow = topPadding;
                 }
         }
+        
+        drawMetadata(painter);
+        
         RkPainter paint(this);
         paint.drawImage(img, 0, 0);
 }

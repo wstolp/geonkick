@@ -166,6 +166,14 @@ class RK_EXPORT RkRect {
                 return width() * height();
         }
 
+        constexpr void translate(int dx, int dy)
+        {
+                rectTopLeft.setX(rectTopLeft.x() + dx);
+                rectTopLeft.setY(rectTopLeft.y() + dy);
+                rectBottomRight.setX(rectTopLeft.x() + dx);
+                rectBottomRight.setY(rectTopLeft.y() + dy);
+        }
+
  private:
        RkPoint rectTopLeft;
        RkPoint rectBottomRight;

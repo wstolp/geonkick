@@ -981,6 +981,7 @@ std::string PercussionState::toJson() const
         std::ostringstream jsonStream;
         jsonStream << std::fixed << std::setprecision(7);
         jsonStream << "{" << std::endl;
+        jsonStream << getPresetMetadata().toJson();
         oscJson(jsonStream);
         kickJson(jsonStream);
         jsonStream << "}" << std::endl;
@@ -1314,4 +1315,14 @@ GeonkickApi::EnvelopeApplyType PercussionState::getApplyTypeFromObj(const rapidj
 	if (value.IsInt())
 		return static_cast<GeonkickApi::EnvelopeApplyType>(value.GetInt());
 	return GeonkickApi::EnvelopeApplyType::Linear;
+}
+
+const PresetMetadata& PercussionState::getPresetmetadata() const
+{
+        return presetMetadata;
+}
+
+const PresetMetadata& PercussionState::getPresetmetadata() const
+{
+        return presetMetadata;
 }

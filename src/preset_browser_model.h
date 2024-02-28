@@ -36,6 +36,7 @@ class PresetBrowserModel : public RkObject {
  public:
         explicit PresetBrowserModel(RkObject *parent, GeonkickApi *api);
         std::string presetName(int row, int column) const;
+        Preset* getSelectedPreset() const;
         size_t folderPages() const;
         size_t folderPage() const;
         void folderNextPage();

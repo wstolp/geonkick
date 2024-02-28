@@ -1,5 +1,5 @@
 /**
- * File name: preset.cpp
+ * File name: Preset.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -26,7 +26,10 @@
 Preset::Preset(const std::filesystem::path& path)
         : presetName{path.stem().string()}
         , presetPath{path}
+        , presetAuthor{"Unknown"}
+        , presetLicense{"Unknown"}
 {
+        loadMetadata();
 }
 
 Preset::PresetType Preset::type() const
@@ -36,22 +39,107 @@ Preset::PresetType Preset::type() const
         return PresetType::Percussion;
 }
 
-std::string Preset::name() const
-{
-        return presetName;
-}
-
 void Preset::setName(const std::string &name)
 {
         presetName = name;
 }
 
-std::filesystem::path Preset::path() const
+const std::string& Preset::name() const
 {
-        return presetPath;
+        return presetName;
 }
 
 void Preset::setPath(const std::filesystem::path &path)
 {
         presetPath = path;
+}
+
+const std::filesystem::path& Preset::path() const
+{
+        return presetPath;
+}
+
+void Preset::setAuthor(const std::string &author)
+{
+        presetAuthor = author;
+}
+
+const std::string& Preset::author() const
+{
+        return presetAuthor;
+}
+
+void Preset::setUrl(const std::string &url)
+{
+        presetUrl = url;
+}
+
+const std::string& Preset::url() const
+{
+        return presetUrl;
+}
+
+void Preset::setLicense(const std::string &license)
+{
+        presetLicense = license;
+}
+
+const std::string& Preset::license() const
+{
+        return presetLicense;
+}
+
+void Preset::setCategory(const std::string &category)
+{
+        presetCategory = category;
+}
+
+const std::string& Preset::category() const
+{
+        return presetCategory;
+}
+
+void Preset::loadMetadata()
+{
+        std::ifstream file(path().string().c_str());
+        if (!file.is_open()) {
+	        GEONKICK_LOG_ERROR("can't open preset file " << path().string());
+                return;
+        }
+
+        rapidjson::Document document;
+        {
+                std::string fileData((std::istreambuf_iterator<char>(file)),
+                                     (std::istreambuf_iterator<char>()));
+                if (document.Parse(fileData.c_str()).HasParseError()) {
+                        GEONKICK_LOG_ERROR("error on parsing JSON data");
+                        return;
+                }
+        }
+
+        if (!document.IsObject())
+                return;
+
+        for (const auto &m: document.GetObject()) {
+                if (m.name == "metadata" && m.value.IsObject()) {
+                        parseMetadata(m.value);
+                        break;
+                }
+        }
+}
+
+void Preset::parseMetadata(const rapidjson::Value &obj)
+{
+        for (const auto &m: obj.GetObject()) {
+                if (m.name == "name" && m.value.IsString())
+                        presetName = m.value.GetString();
+                if (m.name == "author" && m.value.IsString())
+                        presetAuthor = m.value.GetString();
+                if (m.name == "url" && m.value.IsString())
+                        presetUrl = m.value.GetString();
+                if (m.name == "license" && m.value.IsString())
+                        presetLicense = m.value.GetString();
+                if (m.name == "category" && m.value.IsString())
+                        presetCategory = Geonkick::toLowercase(m.value.GetString());
+        }
 }

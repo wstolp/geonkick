@@ -1,5 +1,5 @@
 /**
- * File name: preset.h
+ * File name: Preset.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
@@ -21,10 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PRESET_H
-#define PRESET_H
+#ifndef GEONKICK_PRESET_H
+#define GEONKICK_PRESET_H
 
 #include "globals.h"
+
+#include <rapidjson/document.h>
 
 class Preset {
  public:
@@ -35,14 +37,30 @@ class Preset {
 
         explicit Preset(const std::filesystem::path& path);
         PresetType type() const;
-        std::string name() const;
-        void setName(const std::string &name);
-        std::filesystem::path path() const;
         void setPath(const std::filesystem::path& path);
+        const std::filesystem::path& path() const;
+        void setName(const std::string &name);
+        const std::string& name() const;
+        void setAuthor(const std::string &author);
+        const std::string& author() const;
+        void setUrl(const std::string &url);
+        const std::string& url() const;     
+        void setLicense(const std::string &license);
+        const std::string& license() const;
+        void setCategory(const std::string &category);
+        const std::string& category() const;
+
+protected:
+        void loadMetadata();
+        void parseMetadata(const rapidjson::Value &obj);
 
  private:
         std::string presetName;
         std::filesystem::path presetPath;
+        std::string presetAuthor;
+        std::string presetUrl;
+        std::string presetLicense;
+        std::string presetCategory;
 };
 
-#endif // PRESET_H
+#endif // GEONKICK_PRESET_H

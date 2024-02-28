@@ -30,6 +30,7 @@
 class PresetBrowserModel;
 class RkButton;
 class RkContainer;
+class RkPainter;
 
 class PresetBrowserView: public GeonkickWidget {
  public:
@@ -38,6 +39,7 @@ class PresetBrowserView: public GeonkickWidget {
  protected:
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
+        void drawMetadata(RkPainter &painter);
         void paintWidget(RkPaintEvent *event) override;
         void updatePageButtons();
 

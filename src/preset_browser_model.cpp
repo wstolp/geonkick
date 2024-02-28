@@ -34,7 +34,7 @@ PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         , folderPageIndex{0}
         , presetPageIndex{0}
         , numberOfPresetColumns{3}
-        , rowsPerColumn{12}
+        , rowsPerColumn{15}
         , selectedFolder{geonkickApi->getPresetFolder(0)}
         , selectedPreset{nullptr}
 {
@@ -52,6 +52,11 @@ std::string PresetBrowserModel::presetName(int row, int column) const
                         return preset->name();
         }
         return std::string();
+}
+
+Preset* PresetBrowserModel::getSelectedPreset() const
+{
+        return selectedPreset;
 }
 
 bool PresetBrowserModel::isKit(int row, int column) const
