@@ -106,7 +106,6 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key = *key;
                 gkick_audio_output_swap_buffers(audio_output);
-                gkick_audio_add_playing_buffer_to_ring(audio_output);
         } else {
                 audio_output->key.state = key->state;
         }
@@ -127,15 +126,33 @@ gkick_audio_set_play(struct gkick_audio_output *audio_output)
         gkick_audio_output_key_pressed(audio_output, &key);
 }
 
+int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
+if (audio_output->key.state == GKICK_KEY_STATE_RELEASED) {
+        audio_output->decay--;
+        if (audio_output->decay < 0) {
+                audio_output->is_play = false;
+                break;
+        } else {
+                decay_val = - 1.0f * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
+        }
+ } else {
+        decay_val = 1.0f;
+ }
+
 
 void
-gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output)
+gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output,
+                                       size_t size)
 {
-        gkick_buffer_reset(audio_output->playing_buffer);
         size_t i = 0;
         gkick_real factor = gkick_audio_output_tune_factor(audio_output->key.note_number);
         factor = geonkick_clamp(factor, 0.5f, 2.0f);
-        while (!gkick_buffer_is_end(audio_output->playing_buffer)) {
+        while (i < size) {
+                if (gkick_buffer_is_end(audio_output->playing_buffer)) {
+                        audio_output->playing = false;
+                        break;
+                }
+
                 gkick_real val;
                 if (audio_output->tune) {
                         val = gkick_buffer_stretch_get_next(audio_output->playing_buffer,
@@ -143,7 +160,9 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output)
                 } else {
                         val = gkick_buffer_get_next(audio_output->playing_buffer);
                 }
-                val *= (gkick_real)audio_output->key.velocity / 127;
+
+                gkick_real decay_val = gkick_audio_get_decay_val(audio_output);
+                val *= decay_val * ((gkick_real)audio_output->key.velocity / 127);
                 ring_buffer_add_value(audio_output->ring_buffer, i++, val);
         }
 }
@@ -260,4 +279,26 @@ gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
 {
         *channel = audio_output->channel;
         return GEONKICK_OK;
+}
+
+void gkick_audio_get_data(struct gkick_audio_output *audio_output,
+                          gkick_real **data,
+                          size_t size)
+{
+        gkick_audio_add_playing_buffer_to_ring(audio_output, size);
+        if (audio_output->note_off_enabled) {
+        } else {
+                ring_buffer_get_data(audio_output->ring_buffer,
+                                     data[0],
+                                     size);
+                ring_buffer_get_data(audio_output->ring_buffer,
+                                     data[1],
+                                     size);
+                gkick_real limiter_val = (gkick_real)audio_output->limiter / 1000000;
+                gkick_audio_apply_limiter(data[0],
+                                          data[1],
+                                          size,
+                                          limiter_val);
+                
+        }
 }

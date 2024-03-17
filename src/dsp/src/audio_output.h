@@ -2,7 +2,7 @@
  * File name: audio_output.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -154,5 +154,8 @@ gkick_audio_output_set_channel(struct gkick_audio_output *audio_output,
 enum geonkick_error
 gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
                                size_t *channel);
+
+void gkick_audio_get_data(struct gkick_audio_output *audio_output,
+                          gkick_real **data, size_t size);
 
 #endif // GKICK_AUDO_OUTPUT_H
